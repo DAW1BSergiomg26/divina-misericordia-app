@@ -125,6 +125,28 @@ git merge feature/nueva-funcion
 - `chore:` mantenimiento
 - `restore:` punto de restauración
 
+## Enviar reporte por correo
+
+Requiere Python 3 y `python-dotenv`:
+
+```bash
+pip install python-dotenv
+```
+
+1. Copia el archivo de ejemplo:
+```bash
+cp .env.example .env
+```
+
+2. Edita `.env` con tus datos reales (usa contraseña de aplicación de Gmail).
+
+3. Ejecuta:
+```bash
+python scripts/send_email_report.py
+```
+
+⚠️ No subas `.env` al repositorio (ya está en `.gitignore`).
+
 ## Requisitos
 
 - Navegador moderno con soporte para:
