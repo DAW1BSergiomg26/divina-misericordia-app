@@ -7,7 +7,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import 'dotenv/config';
 import git from 'simple-git';
-import { spawn } from 'child_process';
+import { spawn, exec } from 'child_process';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const gitRepo = git(__dirname);
@@ -74,7 +74,8 @@ app.post('/api/save', requireAuth, async (req, res) => {
     fs.appendFileSync(LOG_FILE, logEntry);
 
     try {
-      await gitRepo.add([page, 'backups/', 'logs/']);
+      await gitRepo.add([page, 'backups/']);
+      await new Promise((resolve) => exec('git add -f logs/', { cwd: __dirname }, resolve));
       await gitRepo.commit(`fix: actualizar ${page} desde admin`);
       await gitRepo.addTag(`restore-${ts}`);
     } catch (gitErr) {
