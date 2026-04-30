@@ -127,6 +127,7 @@ git merge feature/nueva-funcion
 
 ## Enviar reporte por correo
 
+### Manual
 Requiere Python 3 y `python-dotenv`:
 
 ```bash
@@ -143,6 +144,23 @@ cp .env.example .env
 3. Ejecuta:
 ```bash
 python scripts/send_email_report.py
+```
+
+### Automático tras guardar desde admin
+Al guardar desde el panel admin (`/admin-panel.html`), se ejecuta automáticamente `scripts/send_email_report.py` y envía un correo con:
+- Fecha y commit
+- Archivo modificado y backup creado
+- Tag restore generado
+- Rama actual y enlace GitHub
+- Comando de rollback
+
+Configura las variables en `.env`:
+```
+EMAIL_FROM=menu2informatico@gmail.com
+EMAIL_TO=menu2informatico@gmail.com
+EMAIL_PASSWORD=tu_contraseña_app_16_dígitos
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
 ```
 
 ⚠️ No subas `.env` al repositorio (ya está en `.gitignore`).
