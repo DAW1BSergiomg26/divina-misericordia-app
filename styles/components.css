@@ -1,0 +1,578 @@
+.loader-mark {
+  font-size: 4.5rem;
+  filter: drop-shadow(0 0 25px var(--gold));
+  animation: holyPulse 2.4s ease-in-out infinite;
+}
+
+#loading h1,
+.brand strong,
+.right-panel h1,
+.right-panel h2,
+.left-card h3,
+.trust-card strong,
+.bottom-steps button,
+.nav-item {
+  font-family: "Cinzel Decorative", serif;
+}
+
+#loading h1 {
+  letter-spacing: .12em;
+  font-size: 1.7rem;
+}
+
+#loading p {
+  color: var(--gold-3);
+  letter-spacing: .1em;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  text-shadow: 0 0 20px rgba(242, 196, 94, .5);
+}
+
+.brand-seal {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: radial-gradient(circle, rgba(242, 196, 94, .18), rgba(0, 0, 0, .72));
+  box-shadow: 0 0 20px rgba(242, 196, 94, .25);
+  color: var(--gold);
+  font-size: 1.55rem;
+}
+
+.brand strong,
+.brand span {
+  display: block;
+  text-transform: uppercase;
+}
+
+.brand strong {
+  color: var(--gold);
+  font-size: 1.45rem;
+}
+
+.brand span {
+  color: var(--text);
+  font-size: 1.05rem;
+}
+
+.left-rail,
+.left-card,
+.right-panel,
+.trust-card,
+.incense-card,
+.bottom-steps,
+#toast {
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(14, 9, 5, .9), rgba(3, 3, 3, .76)),
+    radial-gradient(circle at top, rgba(242, 196, 94, .16), transparent 54%);
+  box-shadow:
+    0 0 35px rgba(0, 0, 0, .58),
+    0 0 20px rgba(242, 196, 94, .14),
+    inset 0 0 36px rgba(255, 230, 145, .035);
+  backdrop-filter: blur(14px);
+}
+
+.left-rail,
+.right-panel,
+.left-card,
+.trust-card,
+.incense-card {
+  border-radius: .9rem;
+}
+
+.left-rail {
+  padding: .7rem;
+}
+
+.nav-item {
+  width: 100%;
+  min-height: 54px;
+  border: 0;
+  border-bottom: 1px solid var(--line-soft);
+  background: transparent;
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  align-items: center;
+  text-align: left;
+  cursor: pointer;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: .025em;
+  font-size: .88rem;
+}
+
+.nav-item:last-child {
+  border-bottom: 0;
+}
+
+.nav-item span {
+  color: var(--gold);
+  font-size: 1.55rem;
+  text-align: center;
+}
+
+.nav-item.active,
+.nav-item:hover {
+  color: var(--gold-3);
+  background:
+    linear-gradient(90deg, rgba(242, 196, 94, .22), transparent),
+    rgba(242, 196, 94, .035);
+  box-shadow: inset 0 0 18px rgba(242, 196, 94, .08);
+}
+
+.left-card {
+  padding: .8rem;
+  text-align: center;
+}
+
+.left-card h3 {
+  color: var(--gold);
+  font-size: .96rem;
+  text-transform: uppercase;
+  margin-bottom: .3rem;
+}
+
+.left-card p {
+  color: var(--text);
+  line-height: 1.38;
+  font-size: .9rem;
+}
+
+.left-card button,
+.prayer-list button,
+.speed-grid button,
+.player-row button,
+.control-grid button,
+.trust-card button,
+.incense-card button,
+.bottom-steps button,
+.footer-icons button {
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(59, 33, 8, .72), rgba(5, 4, 4, .84)),
+    radial-gradient(circle at top, rgba(255, 220, 126, .15), transparent);
+  color: var(--gold-3);
+  border-radius: .55rem;
+  cursor: pointer;
+  box-shadow:
+    inset 0 0 18px rgba(255, 218, 120, .04),
+    0 0 18px rgba(0, 0, 0, .32);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.left-card button:hover,
+.prayer-list button:hover,
+.prayer-list button.active,
+.speed-grid button:hover,
+.speed-grid button.active,
+.player-row button:hover,
+.control-grid button:hover,
+.trust-card:hover,
+.incense-card button:hover,
+.bottom-steps button:hover,
+.bottom-steps button.active,
+.footer-icons button:hover {
+  transform: translateY(-1px);
+  border-color: var(--gold-3);
+  box-shadow:
+    0 0 24px rgba(242, 196, 94, .28),
+    inset 0 0 18px rgba(255, 218, 120, .08);
+}
+
+.audio-wave {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .18rem;
+  margin: .45rem 0;
+}
+
+.audio-wave span {
+  width: 3px;
+  height: 12px;
+  background: var(--gold);
+  border-radius: 99px;
+  box-shadow: 0 0 10px var(--gold);
+  animation: wave 1.2s ease-in-out infinite;
+}
+
+.audio-wave span:nth-child(2n) {
+  animation-delay: .18s;
+}
+
+.audio-wave span:nth-child(3n) {
+  animation-delay: .32s;
+}
+
+.audio-controls {
+  display: flex;
+  justify-content: center;
+  gap: .7rem;
+  margin: .5rem 0;
+}
+
+.audio-controls button {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+}
+
+.audio-controls .main-audio {
+  width: 52px;
+  height: 52px;
+  color: #171005;
+  background: radial-gradient(circle, #ffe79b, #b77812 72%);
+}
+
+.volume-row {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  align-items: center;
+  gap: .5rem;
+}
+
+.volume-track {
+  height: 7px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, .13);
+  overflow: hidden;
+}
+
+.volume-track div {
+  width: 63%;
+  height: 100%;
+  background: linear-gradient(90deg, #9f6209, #ffe07a);
+}
+
+.flower-card button {
+  width: 100%;
+  padding: .45rem;
+  margin-top: .55rem;
+  text-transform: uppercase;
+}
+
+.right-panel {
+  padding: .85rem;
+}
+
+.right-panel::before,
+.right-panel::after {
+  content: "";
+  position: absolute;
+  inset: .55rem;
+  border: 1px solid rgba(242, 196, 94, .18);
+  border-radius: .7rem;
+  pointer-events: none;
+}
+
+.right-panel::after {
+  inset: .9rem;
+  border-color: rgba(242, 196, 94, .08);
+}
+
+.panel-section {
+  position: relative;
+  z-index: 1;
+  padding: .9rem .45rem;
+  border-bottom: 1px solid var(--line-soft);
+  text-align: center;
+}
+
+.panel-section:last-child {
+  border-bottom: 0;
+}
+
+.right-panel h2 {
+  color: var(--gold);
+  text-transform: uppercase;
+  font-size: .92rem;
+  letter-spacing: .06em;
+  margin-bottom: .65rem;
+}
+
+.right-panel h1 {
+  color: var(--text);
+  font-size: 1.12rem;
+  line-height: 1.35;
+  text-transform: uppercase;
+  margin-bottom: .8rem;
+}
+
+.mercy-pill {
+  display: inline-block;
+  padding: .38rem 1rem;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+  color: var(--gold-3);
+  background: rgba(92, 50, 8, .38);
+  margin-bottom: .6rem;
+}
+
+#mercy-countdown,
+#count-label {
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+.prayer-list {
+  display: grid;
+  gap: .45rem;
+}
+
+.prayer-list button {
+  min-height: 42px;
+  padding: .45rem .7rem;
+  text-align: left;
+  text-transform: uppercase;
+  font-size: .8rem;
+  font-weight: 700;
+}
+
+.prayer-list small {
+  float: right;
+  color: var(--gold);
+  font-size: .72rem;
+}
+
+.speed-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .55rem;
+}
+
+.speed-grid button {
+  height: 72px;
+  display: grid;
+  place-items: center;
+  gap: .2rem;
+  font-size: .76rem;
+}
+
+.speed-grid span {
+  font-size: 1.85rem;
+}
+
+.progress-row {
+  display: grid;
+  grid-template-columns: 1fr 42px;
+  gap: .6rem;
+  align-items: center;
+}
+
+.progress-track {
+  height: 16px;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, .6);
+  overflow: hidden;
+  box-shadow: inset 0 0 14px rgba(0, 0, 0, .82);
+}
+
+#progress-fill {
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #a76206, #ffd85f, #fff1b0);
+  box-shadow: 0 0 16px rgba(255, 218, 95, .7);
+  transition: width .3s ease;
+}
+
+#progress-label {
+  color: var(--text);
+}
+
+.player-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .9rem;
+}
+
+.player-row button {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  justify-self: center;
+  font-size: 1.45rem;
+}
+
+.player-row .play-main {
+  color: #1c1205;
+  background: radial-gradient(circle, #ffe79b, #b77812 72%);
+}
+
+.control-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: .75rem;
+}
+
+.control-grid button {
+  height: 78px;
+  display: grid;
+  place-items: center;
+  font-size: .78rem;
+  text-transform: uppercase;
+}
+
+.control-grid span {
+  font-size: 1.95rem;
+}
+
+.prayer-box {
+  max-height: 120px;
+  overflow: auto;
+}
+
+#prayer-text {
+  line-height: 1.55;
+  color: var(--muted);
+  font-size: .92rem;
+}
+
+.trust-card {
+  min-height: 94px;
+  padding: .85rem 1rem;
+  display: grid;
+  grid-template-columns: 1fr 58px;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+}
+
+.trust-card strong {
+  display: block;
+  color: var(--gold);
+  font-size: 1.85rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(242, 196, 94, .45);
+}
+
+.trust-card span {
+  display: block;
+  margin-top: .35rem;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.trust-card button {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  color: var(--gold-3);
+}
+
+.incense-card {
+  padding: .7rem;
+  text-align: center;
+}
+
+.incense-card button {
+  width: 100%;
+  padding: .48rem;
+  text-transform: uppercase;
+  margin-bottom: .55rem;
+}
+
+.incense-card p {
+  line-height: 1.38;
+  color: var(--text);
+  font-size: .9rem;
+}
+
+.bottom-steps {
+  height: 58px;
+  border-radius: .8rem;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  align-items: center;
+  padding: .35rem;
+}
+
+.bottom-steps button {
+  height: 46px;
+  border: 0;
+  background: transparent;
+  display: grid;
+  grid-template-columns: 34px 22px 1fr;
+  align-items: center;
+  gap: .35rem;
+  font-size: .72rem;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--text);
+}
+
+.bottom-steps span {
+  color: var(--gold);
+  font-size: 1.35rem;
+  text-align: center;
+}
+
+.bottom-steps b {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--gold);
+  border: 1px solid var(--line);
+}
+
+.footer-icons {
+  display: flex;
+  gap: .75rem;
+}
+
+.footer-icons button {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 1.15rem;
+}
+
+#toast {
+  padding: .65rem 1.4rem;
+  border-radius: 99px;
+  color: var(--gold);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
+
+#toast.show {
+  opacity: 1;
+}
+
+@keyframes holyPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: .85;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+@keyframes wave {
+  0%, 100% {
+    height: 8px;
+    opacity: .5;
+  }
+
+  50% {
+    height: 26px;
+    opacity: 1;
+  }
+}

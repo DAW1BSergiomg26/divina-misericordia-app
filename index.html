@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Divina Misericordia — Santuario Virtual</title>
+
+  <meta name="theme-color" content="#070307" />
+  <link rel="manifest" href="manifest.json" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=EB+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles/base.css" />
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/layout.css" />
+  <link rel="stylesheet" href="styles/components.css" />
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+
+<body>
+  <noscript>Esta aplicación necesita JavaScript activado.</noscript>
+
+  <div id="loading">
+    <div class="loader-mark">✝</div>
+    <h1>Divina Misericordia</h1>
+    <p>Jesús, En Vos Confío</p>
+  </div>
+
+  <div id="app">
+    <main id="scene-root" aria-label="Santuario virtual"></main>
+
+    <header class="brand">
+      <div class="brand-seal">✝</div>
+      <div>
+        <strong>Divina</strong>
+        <span>Misericordia</span>
+      </div>
+    </header>
+
+    <aside class="left-rail">
+      <button class="nav-item active" data-mode="mercy">
+        <span>✦</span>
+        Oración actual
+      </button>
+
+      <button class="nav-item" data-mode="rosary">
+        <span>📿</span>
+        Santo Rosario
+      </button>
+
+      <button class="nav-item" data-mode="chaplet">
+        <span>☀</span>
+        Coronilla
+      </button>
+
+      <button class="nav-item" data-mode="novena">
+        <span>▣</span>
+        Novena
+      </button>
+
+      <button class="nav-item" data-mode="cross">
+        <span>✝</span>
+        Vía Crucis
+      </button>
+
+      <button class="nav-item">
+        <span>🙏</span>
+        Oraciones
+      </button>
+
+      <button class="nav-item">
+        <span>◷</span>
+        Historial
+      </button>
+
+      <button class="nav-item">
+        <span>⚙</span>
+        Configuración
+      </button>
+    </aside>
+
+    <section class="left-card audio-card">
+      <h3>♫ Música Ambiental</h3>
+      <p>Adoración Eucarística</p>
+
+      <div class="audio-wave">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+
+      <div class="audio-controls">
+        <button>⏮</button>
+        <button id="audio-btn" class="main-audio">⏸</button>
+        <button>⏭</button>
+      </div>
+
+      <div class="volume-row">
+        <span>🔊</span>
+        <div class="volume-track"><div></div></div>
+      </div>
+    </section>
+
+    <section class="left-card flower-card">
+      <h3>🌹 Ofrecer Flores</h3>
+      <p>María, Madre de la Misericordia, te ofrezco estas flores con amor, por Jesús y por las almas del mundo entero. Amén.</p>
+      <button id="flowers-btn">Ofrecer Flores</button>
+    </section>
+
+    <aside class="right-panel">
+      <section class="panel-section current">
+        <h2>Oración actual</h2>
+        <h1 id="prayer-title">Hora de la Misericordia</h1>
+        <div class="mercy-pill">♥ 15:00</div>
+        <p id="mercy-countdown">Faltan 00:00:00 para las 15:00</p>
+      </section>
+
+      <section class="panel-section">
+        <h2>Elegir oración</h2>
+
+        <div class="prayer-list">
+          <button data-mode="mercy" class="active">
+            ✦ Hora de la Misericordia
+            <small>15:00</small>
+          </button>
+
+          <button data-mode="chaplet">
+            ✚ Coronilla
+          </button>
+
+          <button data-mode="novena">
+            ✧ Novena
+          </button>
+
+          <button data-mode="cross">
+            ✝ Vía Crucis
+          </button>
+
+          <button data-mode="rosary">
+            ✠ Santo Rosario
+          </button>
+        </div>
+      </section>
+
+      <section class="panel-section">
+        <h2>Velocidad</h2>
+
+        <div class="speed-grid">
+          <button data-speed="slow">
+            <span>◷</span>
+            Lenta
+          </button>
+
+          <button data-speed="normal" class="active">
+            <span>✠</span>
+            Normal
+          </button>
+
+          <button data-speed="fast">
+            <span>➤</span>
+            Rápida
+          </button>
+        </div>
+      </section>
+
+      <section class="panel-section">
+        <h2>Progreso</h2>
+
+        <div class="progress-row">
+          <div class="progress-track">
+            <div id="progress-fill"></div>
+          </div>
+          <strong id="progress-label">0%</strong>
+        </div>
+
+        <p id="count-label">Cuenta 0 de 59</p>
+      </section>
+
+      <section class="panel-section">
+        <div class="player-row">
+          <button id="prev-btn">⏪</button>
+          <button id="play-btn" class="play-main">▶</button>
+          <button id="reset-btn">■</button>
+        </div>
+      </section>
+
+      <section class="panel-section">
+        <h2>Controles</h2>
+
+        <div class="control-grid">
+          <button id="repeat-btn">
+            <span>↻</span>
+            Repetir
+          </button>
+
+          <button id="next-btn">
+            <span>🔖</span>
+            Continuar
+          </button>
+        </div>
+      </section>
+
+      <section class="panel-section prayer-box">
+        <p id="prayer-text">Preparando oración...</p>
+      </section>
+    </aside>
+
+    <section class="trust-card">
+      <div>
+        <strong>Jesús, En Vos Confío</strong>
+        <span>Haz clic para escuchar</span>
+      </div>
+      <button>✝</button>
+    </section>
+
+    <section class="incense-card">
+      <button id="incense-btn">Ofrecer Incienso</button>
+      <p>Señor Jesús, te ofrezco este incienso como símbolo de mi oración que se eleva hasta tu Trono de Misericordia. Amén.</p>
+    </section>
+
+    <nav class="bottom-steps">
+      <button class="active"><span>🎨</span><b>1</b> Oración actual</button>
+      <button><span>📿</span><b>2</b> Santo Rosario</button>
+      <button><span>☀</span><b>3</b> Coronilla</button>
+      <button><span>▣</span><b>4</b> Novena</button>
+      <button><span>✝</span><b>5</b> Vía Crucis</button>
+      <button><span>🙏</span><b>6</b> Oraciones</button>
+      <button><span>▥</span><b>7</b> Historial</button>
+    </nav>
+
+    <div class="footer-icons">
+      <button>⚙</button>
+      <button>🕯</button>
+      <button id="fullscreen-btn">⛶</button>
+    </div>
+
+    <div id="toast"></div>
+  </div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
