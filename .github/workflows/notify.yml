@@ -1,0 +1,92 @@
+name: Email Notification
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, '[skip-notify]') }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Get commit info
+        id: info
+        run: |
+          echo "repo=${{ github.repository }}" >> $GITHUB_OUTPUT
+          echo "branch=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          echo "commit=${{ github.sha }}" >> $GITHUB_OUTPUT
+          echo "author=${{ github.actor }}" >> $GITHUB_OUTPUT
+          echo "date=$(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_OUTPUT
+          echo "message<<EOF" >> $GITHUB_OUTPUT
+          git log -1 --pretty=%B >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          git diff --name-only HEAD~1 HEAD 2>/dev/null || git diff --name-only ${{ github.event.before }} ${{ github.sha }} 2>/dev/null || echo "Archivos nuevos" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "url=https://github.com/${{ github.repository }}/commit/${{ github.sha }}" >> $GITHUB_OUTPUT
+
+      - name: Send email notification
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.EMAIL_HOST }}
+          server_port: ${{ secrets.EMAIL_PORT }}
+          username: ${{ secrets.EMAIL_USER }}
+          password: ${{ secrets.EMAIL_PASS }}
+          subject: "[Divina Misericordia] Push a ${{ steps.info.outputs.branch }} - ${{ steps.info.outputs.commit }}"
+          to: ${{ secrets.EMAIL_TO }}
+          from: ${{ secrets.EMAIL_USER }}
+          body: |
+            🔔 Notificación de cambios - Divina Misericordia App
+
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            📋 INFORMACIÓN DEL CAMBIO
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+            • Repositorio: ${{ steps.info.outputs.repo }}
+            • Rama: ${{ steps.info.outputs.branch }}
+            • Commit: ${{ steps.info.outputs.commit }}
+            • Autor: ${{ steps.info.outputs.author }}
+            • Fecha: ${{ steps.info.outputs.date }}
+
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            📝 MENSAJE DE COMMIT
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+            ${{ steps.info.outputs.message }}
+
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            📂 ARCHIVOS MODIFICADOS
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+            ${{ steps.info.outputs.files }}
+
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            🔗 ENLACE AL COMMIT
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+            ${{ steps.info.outputs.url }}
+
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            ⏪ CÓMO REVERTIR ESTE CAMBIO
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+            1. Ver commits:
+               git log --oneline
+
+            2. Revertir este commit:
+               git revert ${{ github.sha }}
+
+            3. Volver a commit anterior:
+               git reset --hard HEAD~1
+
+            4. Si hay tags de restauración:
+               git tag (para listar)
+               git checkout restore-YYYY-MM-DD-HHMM
+
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            Mensaje automático - Divina Misericordia App

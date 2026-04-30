@@ -1,0 +1,68 @@
+name: CI - Divina Misericordia
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify project structure
+        run: |
+          echo "::group::Project Structure"
+          ls -la
+          echo "::endgroup::"
+
+          echo "::group::Verify HTML"
+          grep -q "<!DOCTYPE html>" index.html && echo "✅ index.html válido"
+          echo "::endgroup::"
+
+          echo "::group::Verify JS modules"
+          node -e "
+            const fs = require('fs');
+            const files = ['src/main.js', 'src/audio/audio.js', 'src/core/config.js', 'src/prayers/prayers.js', 'src/prayers/rosary.js', 'src/scene/scene.js', 'src/scene/state.js', 'src/ui/ui.js'];
+            files.forEach(f => {
+              if (!fs.existsSync(f)) throw new Error('Falta: ' + f);
+            });
+            console.log('✅ Todos los módulos JS existen');
+          "
+          echo "::endgroup::"
+
+          echo "::group::Verify CSS"
+          ls styles/
+          echo "::endgroup::"
+
+          echo "::group::Verify PWA files"
+          node -e "
+            const sw = require('fs').readFileSync('service-worker.js', 'utf8');
+            if (!sw.includes('CACHE_NAME')) throw new Error('SW inválido');
+            const manifest = JSON.parse(require('fs').readFileSync('manifest.json', 'utf8'));
+            if (!manifest.name) throw new Error('Manifest inválido');
+            console.log('✅ PWA files válidos');
+          "
+          echo "::endgroup::"
+
+      - name: Check for exposed secrets
+        run: |
+          echo "::group::Scanning for exposed credentials"
+          ! grep -r -i "password\|secret\|token\|api.key\|api_key" --include="*.js" --include="*.json" . && echo "✅ No se encontraron credenciales expuestas" || (echo "❌ Posible credencial expuesta" && exit 1)
+          echo "::endgroup::"
+
+      - name: Generate change summary
+        if: always()
+        run: |
+          echo "## Resumen del cambio" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Repositorio:** ${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Rama:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Autor:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Archivos modificados" >> $GITHUB_STEP_SUMMARY
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} 2>/dev/null || echo "Primer commit" >> $GITHUB_STEP_SUMMARY
