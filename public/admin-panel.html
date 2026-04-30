@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Divina Misericordia</title>
+  <style>
+    :root { --gold: #d8b45a; --bg: #080503; --text: #fff6dc; --panel: rgba(34, 19, 9, 0.84); }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "EB Garamond", serif;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid rgba(216, 180, 90, 0.42);
+      margin-bottom: 1rem;
+    }
+    h1 { color: var(--gold); font-family: "Cinzel Decorative", serif; }
+    .logout { 
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--gold);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--gold);
+      cursor: pointer;
+    }
+    .toolbar {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .toolbar button, .toolbar select {
+      padding: 0.5rem 1rem;
+      border: 1px solid rgba(216, 180, 90, 0.42);
+      border-radius: 0.55rem;
+      background: var(--panel);
+      color: var(--text);
+      cursor: pointer;
+    }
+    .main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      height: calc(100vh - 200px);
+    }
+    .editor, .preview {
+      border: 1px solid rgba(216, 180, 90, 0.42);
+      border-radius: 22px;
+      padding: 1rem;
+      background: var(--panel);
+    }
+    textarea {
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: monospace;
+      resize: none;
+    }
+    iframe { width: 100%; height: 100%; border: none; background: white; }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=EB+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>✝ Panel de Administración</h1>
+    <button class="logout" onclick="logout()">Cerrar Sesión</button>
+  </header>
+
+  <div class="toolbar">
+    <select id="pageSelect" onchange="loadPage()">
+      <option value="index.html">index.html</option>
+    </select>
+    <button onclick="save()">Guardar</button>
+    <button onclick="undo()">Deshacer</button>
+    <button onclick="redo()">Rehacer</button>
+    <button onclick="copy()">Copiar</button>
+    <button onclick="download()">Descargar</button>
+  </div>
+
+  <div class="main">
+    <div class="editor">
+      <textarea id="editor" oninput="preview()"></textarea>
+    </div>
+    <div class="preview">
+      <iframe id="preview"></iframe>
+    </div>
+  </div>
+
+  <script>
+    if (localStorage.adminLogged !== 'true') window.location.href = 'admin.html';
+
+    let currentPage = null;
+    let history = [];
+    let historyIndex = -1;
+
+    function loadPage() {
+      const page = document.getElementById('pageSelect').value;
+      if (!page) return;
+      currentPage = page;
+      fetch(page)
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById('editor').value = html;
+          preview();
+          addToHistory(html);
+        });
+    }
+
+    function preview() {
+      const html = document.getElementById('editor').value;
+      document.getElementById('preview').srcdoc = html;
+    }
+
+    function addToHistory(html) {
+      history = history.slice(0, historyIndex + 1);
+      history.push(html);
+      historyIndex++;
+    }
+
+    function undo() {
+      if (historyIndex <= 0) return;
+      historyIndex--;
+      document.getElementById('editor').value = history[historyIndex];
+      preview();
+    }
+
+    function redo() {
+      if (historyIndex >= history.length - 1) return;
+      historyIndex++;
+      document.getElementById('editor').value = history[historyIndex];
+      preview();
+    }
+
+    function copy() {
+      navigator.clipboard.writeText(document.getElementById('editor').value);
+    }
+
+    function download() {
+      if (!currentPage) return;
+      const blob = new Blob([document.getElementById('editor').value], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = currentPage;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function save() {
+      if (!currentPage) { alert('Selecciona una página'); return; }
+      fetch('/api/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ page: currentPage, content: document.getElementById('editor').value })
+      })
+        .then(res => res.ok ? alert('Guardado') : alert('Error: Backend requerido'))
+        .catch(() => alert('Error: Backend no disponible'));
+    }
+
+    function logout() {
+      localStorage.removeItem('adminLogged');
+      window.location.href = 'admin.html';
+    }
+
+    loadPage();
+  </script>
+</body>
+</html>
