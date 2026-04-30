@@ -29,7 +29,12 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     Promise.all([
       caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS)),
-      caches.open(CACHE_NAME).then((cache) => cache.addAll(CDN_ASSETS))
+      caches.open(CACHE_NAME).then(async (cache) => {
+        for (const url of CDN_ASSETS) {
+          const response = await fetch(url, { mode: "cors" });
+          if (response.ok) await cache.put(url, response);
+        }
+      })
     ])
   );
 
