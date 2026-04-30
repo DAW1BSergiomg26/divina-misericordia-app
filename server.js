@@ -74,8 +74,7 @@ app.post('/api/save', requireAuth, async (req, res) => {
     fs.appendFileSync(LOG_FILE, logEntry);
 
     try {
-      await gitRepo.add([page, 'backups/']);
-      await new Promise((resolve) => exec('git add -f logs/', { cwd: __dirname }, resolve));
+      await gitRepo.raw(['add', '-f', page, 'backups/', 'logs/']);
       await gitRepo.commit(`fix: actualizar ${page} desde admin`);
       await gitRepo.addTag(`restore-${ts}`);
     } catch (gitErr) {
