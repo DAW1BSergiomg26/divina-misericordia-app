@@ -1,0 +1,32 @@
+{
+  "name": "divina-misericordia-app",
+  "version": "1.0.0",
+  "description": "Santuario virtual interactivo para rezar la Divina Misericordia, construido como PWA con Three.js.",
+  "main": "service-worker.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DAW1BSergiomg26/divina-misericordia-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/DAW1BSergiomg26/divina-misericordia-app/issues"
+  },
+  "homepage": "https://github.com/DAW1BSergiomg26/divina-misericordia-app#readme",
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "simple-git": "^3.36.0"
+  }
+}

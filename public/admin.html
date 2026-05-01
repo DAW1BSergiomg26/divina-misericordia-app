@@ -64,12 +64,17 @@
     function login() {
       const user = document.getElementById('user').value;
       const pass = document.getElementById('pass').value;
-      if (user === 'sacra' && pass === 'Rufi14') {
-        localStorage.adminLogged = 'true';
-        window.location.href = 'admin-panel.html';
-      } else {
-        document.getElementById('error').style.display = 'block';
-      }
+      fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user, pass }),
+        credentials: 'include'
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.ok) window.location.href = 'admin-panel.html';
+          else document.getElementById('error').style.display = 'block';
+        });
     }
   </script>
 </body>
