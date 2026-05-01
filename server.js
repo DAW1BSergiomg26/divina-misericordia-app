@@ -6,11 +6,9 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import 'dotenv/config';
-import git from 'simple-git';
 import { spawn, exec } from 'child_process';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const gitRepo = git(__dirname);
 const LOG_FILE = path.join(__dirname, 'logs', 'admin-changes.log');
 
 const app = express();
@@ -74,9 +72,26 @@ app.post('/api/save', requireAuth, async (req, res) => {
     fs.appendFileSync(LOG_FILE, logEntry);
 
     try {
-      await gitRepo.raw(['add', '-f', page, 'backups/', 'logs/']);
-      await gitRepo.commit(`fix: actualizar ${page} desde admin`);
-      await gitRepo.addTag(`restore-${ts}`);
+      await new Promise((resolve) => {
+        exec(`git add -f "${page}" backups/ logs/`, { cwd: __dirname }, (err) => {
+          if (err) fs.appendFileSync(LOG_FILE, `${now.toISOString()} | GIT ADD ERROR: ${err.message}\n`);
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        exec(`git commit -m "fix: actualizar ${page} desde admin"`, { cwd: __dirname }, (err) => {
+          if (err) fs.appendFileSync(LOG_FILE, `${now.toISOString()} | GIT COMMIT ERROR: ${err.message}\n`);
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        exec(`git tag restore-${ts}`, { cwd: __dirname }, (err) => {
+          if (err) fs.appendFileSync(LOG_FILE, `${now.toISOString()} | GIT TAG ERROR: ${err.message}\n`);
+          resolve();
+        });
+      });
     } catch (gitErr) {
       fs.appendFileSync(LOG_FILE, `${now.toISOString()} | GIT ERROR: ${gitErr.message}\n`);
     }
