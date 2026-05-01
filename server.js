@@ -72,23 +72,35 @@ app.post('/api/save', requireAuth, async (req, res) => {
     fs.appendFileSync(LOG_FILE, logEntry);
 
     try {
+      const gitAdd = `git add -f "${page.replace(/\\/g, '/')}" "backups/" "logs/admin-changes.log"`;
+      fs.appendFileSync(LOG_FILE, `${now.toISOString()} | GIT CMD: ${gitAdd}\n`);
+
       await new Promise((resolve) => {
-        exec(`git add -f "${page}" backups/ logs/`, { cwd: __dirname }, (err) => {
-          if (err) fs.appendFileSync(LOG_FILE, `${now.toISOString()} | GIT ADD ERROR: ${err.message}\n`);
+        exec(gitAdd, { cwd: __dirname }, (err, stdout, stderr) => {
+          if (err) fs.appendFileSync(LOG_FILE, `${now.toISOString()} | GIT ADD ERROR: ${err.message} | stderr: ${stderr}\n`);
+          else fs.appendFileSync(LOG_FILE, `${now.toISOString()} | GIT ADD OK: ${stdout}\n`);
           resolve();
         });
       });
 
+      const gitCommit = `git commit -m "fix: actualizar ${page.replace(/\\/g, '/')} desde admin"`;
+      fs.appendFileSync(LOG_FILE, `${now.toISOString()} | GIT CMD: ${gitCommit}\n`);
+
       await new Promise((resolve) => {
-        exec(`git commit -m "fix: actualizar ${page} desde admin"`, { cwd: __dirname }, (err) => {
-          if (err) fs.appendFileSync(LOG_FILE, `${now.toISOString()} | GIT COMMIT ERROR: ${err.message}\n`);
+        exec(gitCommit, { cwd: __dirname }, (err, stdout, stderr) => {
+          if (err) fs.appendFileSync(LOG_FILE, `${now.toISOString()} | GIT COMMIT ERROR: ${err.message} | stderr: ${stderr}\n`);
+          else fs.appendFileSync(LOG_FILE, `${now.toISOString()} | GIT COMMIT OK: ${stdout}\n`);
           resolve();
         });
       });
 
+      const gitTag = `git tag restore-${ts}`;
+      fs.appendFileSync(LOG_FILE, `${now.toISOString()} | GIT CMD: ${gitTag}\n`);
+
       await new Promise((resolve) => {
-        exec(`git tag restore-${ts}`, { cwd: __dirname }, (err) => {
-          if (err) fs.appendFileSync(LOG_FILE, `${now.toISOString()} | GIT TAG ERROR: ${err.message}\n`);
+        exec(gitTag, { cwd: __dirname }, (err, stdout, stderr) => {
+          if (err) fs.appendFileSync(LOG_FILE, `${now.toISOString()} | GIT TAG ERROR: ${err.message} | stderr: ${stderr}\n`);
+          else fs.appendFileSync(LOG_FILE, `${now.toISOString()} | GIT TAG OK: ${stdout}\n`);
           resolve();
         });
       });
