@@ -2,6 +2,20 @@
 
 ## 🌐 Render
 
+### Opción A: Blueprint (Automático)
+
+1. **Crear nuevo BluePrint** en [Render](https://render.com)
+2. **Conectar GitHub:**
+   - Selecciona el repo: `DAW1BSergiomg26/divina-misericordia-app`
+   - Render leerá `render.yaml` automáticamente
+3. **Variables secretas:**
+   - Las variables marcadas `sync: false` en `render.yaml` deben completarse manualmente en el Dashboard
+4. **Deploy:**
+   - Click "Apply Blueprint"
+   - Render configurará el servicio automáticamente
+
+### Opción B: Manual
+
 1. **Crear nuevo Web Service** en [Render](https://render.com)
 2. **Conectar GitHub:**
    - Selecciona el repo: `DAW1BSergiomg26/divina-misericordia-app`
