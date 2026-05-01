@@ -1,161 +1,110 @@
 # Divina Misericordia — Santuario Virtual
 
-Santuario virtual interactivo para rezar la Divina Misericordia, construido como PWA con Three.js.
+> Santuario virtual interactivo para rezar la Divina Misericordia, construido como PWA con Three.js.
 
-## Estructura del Proyecto
+[![Live Demo](https://img.shields.io/badge/Demo-online-green)](https://daw1bsergiomg26.github.io/divina-misericordia-app/)
+[![GitHub](https://img.shields.io/badge/GitHub-DAW1BSergiomg26-181717?logo=github)](https://github.com/DAW1BSergiomg26/divina-misericordia-app)
+
+## ✝ Descripción
+
+Aplicación web progresiva (PWA) que ofrece un entorno virtual para la oración, con escena 3D renderizada con Three.js, audio ambiental, síntesis de voz para oraciones y panel de administración seguro.
+
+## 📂 Estructura del Proyecto
 
 ```
 divina-misericordia-app/
+├── public/                 # Archivos públicos
+│   ├── admin.html        # Login admin
+│   └── admin-panel.html # Panel de administración
 ├── assets/
-│   └── icons/              # Iconos PWA (192x192, 512x512)
+│   └── icons/           # Iconos PWA (192x192, 512x512)
 ├── src/
 │   ├── audio/
-│   │   └── audio.js        # Motor de audio y síntesis de voz
+│   │   └── audio.js     # Motor de audio y síntesis de voz
 │   ├── core/
-│   │   └── config.js       # Configuración central
+│   │   └── config.js    # Configuración central
 │   ├── prayers/
-│   │   ├── prayers.js      # Textos de oraciones
-│   │   └── rosary.js       # Motor de oraciones
+│   │   ├── prayers.js   # Textos de oraciones
+│   │   └── rosary.js    # Motor de oraciones
 │   ├── scene/
-│   │   ├── renderer.js     # Texturas procedurales
-│   │   ├── scene.js        # Escena 3D (Three.js)
-│   │   └── state.js        # Estado de la escena
+│   │   ├── renderer.js  # Texturas procedurales
+│   │   ├── scene.js     # Escena 3D (Three.js)
+│   │   └── state.js     # Estado de la escena
 │   ├── ui/
-│   │   └── ui.js           # Interfaz de usuario
-│   └── main.js             # Punto de entrada
+│   │   └── ui.js        # Interfaz de usuario
+│   └── main.js          # Punto de entrada
 ├── styles/
-│   ├── base.css            # Reset y variables
-│   ├── main.css            # Estilos principales
-│   ├── layout.css          # Disposición y responsive
-│   └── components.css      # Componentes UI
-├── index.html              # Entrada HTML
-├── manifest.json           # Configuración PWA
-├── service-worker.js       # Service Worker
+│   ├── base.css         # Reset y variables
+│   ├── main.css         # Estilos principales
+│   ├── layout.css       # Disposición y responsive
+│   └── components.css   # Componentes UI
+├── scripts/
+│   └── send_email_report.py  # Reporte por correo
+├── backups/              # Backups automáticos (no sube a git)
+├── logs/                 # Logs de cambios (no sube a git)
+├── server.js             # Backend Node.js (admin, API, git auto-commit)
+├── index.html           # Entrada HTML
+├── manifest.json        # Configuración PWA
+├── service-worker.js    # Service Worker
+├── .env.example        # Ejemplo variables entorno
 ├── .gitignore
 ├── CHANGELOG.md
 └── README.md
 ```
 
-## Instalación
+## 🚀 Instalación
 
-Esta es una aplicación frontend pura (HTML/CSS/JS). No requiere instalación de dependencias npm.
-
-Para desarrollo local, sirve los archivos con cualquier servidor HTTP:
-
-```bash
-# Con Python
-python -m http.server 8080
-
-# Con Node.js (npx)
-npx serve .
-
-# Con PHP
-php -S localhost:8080
-```
-
-## Ejecución
-
-1. Abre `http://localhost:8080` en el navegador
-2. La app funciona como PWA: instalable y offline-ready
-
-## Construcción
-
-No hay paso de build. Los archivos se sirven tal cual.
-
-Para producción, asegúrate de:
-- Minificar CSS/JS (opcional)
-- Verificar que el Service Worker cachea todos los assets
-- Probar en `localhost` con pestaña incógnito
-
-## Despliegue
-
-Sube los archivos a cualquier hosting estático (GitHub Pages, Netlify, Vercel).
-
-### GitHub Pages
-1. Ve a Settings > Pages
-2. Selecciona la rama `main` como fuente
-3. La app estará en `https://DAW1BSergiomg26.github.io/nombre-repo`
-
-## Restaurar una Versión Anterior
+Requisitos:
+- Node.js 18+
+- Python 3 (opcional, para emails)
 
 ```bash
-# Ver tags disponibles
-git tag
+# Clonar repositorio
+git clone https://github.com/DAW1BSergiomg26/divina-misericordia-app.git
+cd divina-misericordia-app
 
-# Volver a un punto de restauración
-git checkout restore-2026-04-30-1200
+# Instalar dependencias backend
+npm install
 
-# Volver a main
-git checkout main
-
-# Revertir un commit específico
-git revert <commit-hash>
-```
-
-## Trabajar con Ramas
-
-```bash
-# Crear rama de funcionalidad
-git checkout -b feature/nueva-funcion
-
-# Crear punto de restauración antes de cambios grandes
-git tag restore-YYYY-MM-DD-HHMM
-git push origin restore-YYYY-MM-DD-HHMM
-
-# Hacer cambios y commitear
-git add .
-git commit -m "feat: descripción del cambio"
-
-# Subir rama
-git push origin feature/nueva-funcion
-
-# Fusionar a main (vía Pull Request recomendado)
-git checkout main
-git merge feature/nueva-funcion
-```
-
-## Convenciones de Commit
-
-- `init:` configuración inicial
-- `feat:` nueva funcionalidad
-- `fix:` corrección de error
-- `docs:` documentación
-- `refactor:` mejora interna
-- `style:` cambios visuales
-- `chore:` mantenimiento
-- `restore:` punto de restauración
-
-## Enviar reporte por correo
-
-### Manual
-Requiere Python 3 y `python-dotenv`:
-
-```bash
-pip install python-dotenv
-```
-
-1. Copia el archivo de ejemplo:
-```bash
+# Configurar variables entorno
 cp .env.example .env
+# Edita .env con tus datos reales
 ```
 
-2. Edita `.env` con tus datos reales (usa contraseña de aplicación de Gmail).
+## 🏃 Ejecución Local
 
-3. Ejecuta:
 ```bash
-python scripts/send_email_report.py
+# Iniciar servidor (backend + frontend)
+node server.js
+
+# Abrir en navegador
+http://localhost:3000
 ```
 
-### Automático tras guardar desde admin
-Al guardar desde el panel admin (`/admin-panel.html`), se ejecuta automáticamente `scripts/send_email_report.py` y envía un correo con:
-- Fecha y commit
-- Archivo modificado y backup creado
-- Tag restore generado
-- Rama actual y enlace GitHub
-- Comando de rollback
+## 🔐 Panel de Administración
 
-Configura las variables en `.env`:
-```
+Accede a `http://localhost:3000/admin.html`:
+- Usuario: `sacra`
+- Contraseña: `Rufi14`
+
+**Funcionalidades:**
+- Editor de archivos HTML con preview en tiempo real
+- Buscador de páginas
+- Auto-refresh toggle
+- Historial undo/redo (máx 20)
+- Guardado con backup automático
+- Git auto-commit y tag restore
+
+## 📧 Variables de Entorno (.env)
+
+```bash
+# Admin
+ADMIN_USER=sacra
+ADMIN_PASSWORD=Rufi14
+SESSION_SECRET=clave_secreta_sesión_larga
+PORT=3000
+
+# Email (Gmail)
 EMAIL_FROM=menu2informatico@gmail.com
 EMAIL_TO=menu2informatico@gmail.com
 EMAIL_PASSWORD=tu_contraseña_app_16_dígitos
@@ -163,9 +112,65 @@ EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
 ```
 
-⚠️ No subas `.env` al repositorio (ya está en `.gitignore`).
+⚠️ **NUNCA subas `.env` al repositorio** (ya está en `.gitignore`)
 
-## Requisitos
+## 💾 Backups Automáticos
+
+Al guardar desde el panel admin:
+1. Se crea backup en `backups/YYYYMMDD-HHMMSS-archivo.html`
+2. Se registra en `logs/admin-changes.log`
+3. Se hace git commit automático: `fix: actualizar archivo desde admin`
+4. Se crea tag: `restore-YYYYMMDD-HHMMSS`
+
+## 🔄 Restaurar una Versión Anterior
+
+```bash
+# Listar puntos de restauración
+git tag
+
+# Volver a un punto específico
+git checkout restore-2026-04-30-1200
+
+# Volver a main
+git checkout main
+
+# Revertir un commit específico (mantiene historial)
+git revert <commit-hash>
+
+# Reset hard (CUIDADO: borra cambios locales)
+git reset --hard restore-2026-04-30-1200
+```
+
+## 🌐 Despliegue
+
+### GitHub Pages (automático con push a main)
+1. Ve a **Settings > Pages**
+2. Selecciona **main** como fuente
+3. La app estará en: `https://daw1bsergiomg26.github.io/divina-misericordia-app/`
+
+### Otros hostings estáticos
+Sube todos los archivos excepto: `node_modules/`, `.env`, `backups/`, `logs/`
+
+## 📜 Convenciones de Commit
+
+- `init:` configuración inicial
+- `feat:` nueva funcionalidad
+- `fix:` corrección de error
+- `docs:` documentación
+- `refactor:` mejora interna sin cambiar comportamiento
+- `style:` cambios visuales
+- `chore:` mantenimiento
+- `restore:` punto de restauración
+
+## 🔒 Seguridad
+
+- Contraseñas solo en `.env` (nunca en código)
+- Sesiones con cookies httpOnly
+- Backend requerido para guardar cambios
+- Panel admin protegido por autenticación
+- `.gitignore` configurado para no subir archivos sensibles
+
+## 📞 Requisitos
 
 - Navegador moderno con soporte para:
   - ES Modules
