@@ -10,7 +10,25 @@ import { spawn, exec } from 'child_process';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.resolve(__dirname, '..');
-const PUBLIC_DIR = path.join(__dirname, 'public');
+
+const candidates = [
+  path.join(__dirname, 'src', 'public'),
+  path.join(__dirname, 'public'),
+  path.join(process.cwd(), 'src', 'public'),
+  path.join(process.cwd(), 'public')
+];
+
+const PUBLIC_DIR = candidates.find(dir => {
+  try { return fs.existsSync(path.join(dir, 'index.html')); }
+  catch { return false; }
+});
+
+if (!PUBLIC_DIR) {
+  console.error('ERROR: No se encontró public/ con index.html. Candidatos:', candidates);
+  process.exit(1);
+}
+
+console.log('PUBLIC_DIR detectado:', PUBLIC_DIR);
 const LOG_FILE = path.join(__dirname, 'logs', 'admin-changes.log');
 
 const app = express();
