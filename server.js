@@ -9,6 +9,7 @@ import 'dotenv/config';
 import { spawn, exec } from 'child_process';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const PUBLIC_DIR = path.join(__dirname, 'src', 'public');
 const LOG_FILE = path.join(__dirname, 'logs', 'admin-changes.log');
 
 const app = express();
@@ -31,10 +32,10 @@ app.use(session({
   }
 }));
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(PUBLIC_DIR));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(PUBLIC_DIR, 'index.html'));
 });
 
 function requireAuth(req, res, next) {
@@ -73,7 +74,7 @@ app.post('/api/save', requireAuth, async (req, res) => {
   }
 
   const safePage = path.basename(page);
-  const targetFile = path.join(__dirname, 'public', safePage);
+    const targetFile = path.join(PUBLIC_DIR, safePage);
 
   const now = new Date();
   const ts = now.toISOString().replace(/[-:]/g, '').split('.')[0].replace('T', '-');
@@ -86,18 +87,18 @@ app.post('/api/save', requireAuth, async (req, res) => {
     if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
     if (!fs.existsSync(logsDir)) fs.mkdirSync(logsDir, { recursive: true });
 
+    const relativePage = `src/public/${safePage}`;
+
     if (fs.existsSync(targetFile)) {
       fs.copyFileSync(targetFile, backupFile);
     }
 
-    fs.writeFileSync(targetFile, content, 'utf8');
+    fs.writeFileSync(path.join(__dirname, relativePage), content, 'utf8');
 
     const logEntry = `${now.toISOString()} | admin | ${safePage} | backup: ${backupFile}\n`;
     fs.appendFileSync(LOG_FILE, logEntry);
 
     try {
-      const relativePage = `public/${safePage}`;
-
       const gitAdd = `git add -f "${relativePage}" "backups/" "logs/admin-changes.log"`;
       fs.appendFileSync(LOG_FILE, `${now.toISOString()} | GIT CMD: ${gitAdd}\n`);
 
