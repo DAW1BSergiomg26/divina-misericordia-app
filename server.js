@@ -9,12 +9,11 @@ import 'dotenv/config';
 import { spawn, exec } from 'child_process';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ROOT_DIR = __dirname;
-const PUBLIC_DIR = path.join(__dirname, 'src', 'public');
+const ROOT_DIR = path.resolve(__dirname, '..');
+const PUBLIC_DIR = path.join(ROOT_DIR, 'src', 'public');
 const LOG_FILE = path.join(__dirname, 'logs', 'admin-changes.log');
 
 const app = express();
-app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 const ADMIN_USER = process.env.ADMIN_USER || 'sacra';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Rufi14';
@@ -30,15 +29,14 @@ app.use(session({
   cookie: {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+    sameSite: 'lax'
   }
 }));
 
 app.use(express.static(PUBLIC_DIR));
-app.use(express.static(ROOT_DIR));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(ROOT_DIR, 'index.html'));
+  res.sendFile(path.join(PUBLIC_DIR, 'index.html'));
 });
 
 function requireAuth(req, res, next) {
@@ -48,13 +46,12 @@ function requireAuth(req, res, next) {
 
 app.post('/api/admin/login', (req, res) => {
   const { user, pass } = req.body;
-  console.log('LOGIN DEBUG - User received:', user, '| ADMIN_USER exists:', !!ADMIN_USER, '| ADMIN_PASSWORD exists:', !!ADMIN_PASSWORD);
+
   if (user === ADMIN_USER && pass === ADMIN_PASSWORD) {
     req.session.admin = true;
-    console.log('LOGIN SUCCESS - Session admin set to:', req.session.admin);
     return res.json({ ok: true });
   }
-  console.log('LOGIN FAILED - User match:', user === ADMIN_USER, '| Pass match:', pass === ADMIN_PASSWORD);
+
   res.status(401).json({ error: 'Credenciales inválidas' });
 });
 
