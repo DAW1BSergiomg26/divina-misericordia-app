@@ -77,11 +77,6 @@ app.post('/api/admin/login', (req, res) => {
   console.log('LOGIN FAIL:', user, pass);
   res.status(401).json({ error: 'Credenciales incorrectas' });
 });
-  }
-
-  console.log('LOGIN FAIL:', user, pass);
-  res.status(401).json({ error: 'Credenciales incorrectas' });
-});
 
 app.post('/api/admin/logout', (req, res) => {
   req.session.destroy(() => res.json({ ok: true }));
