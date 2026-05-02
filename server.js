@@ -67,11 +67,17 @@ function requireAuth(req, res, next) {
 app.post('/api/admin/login', (req, res) => {
   const user = req.body.user || req.body.username;
   const pass = req.body.pass || req.body.password;
-  console.log('LOGIN DEBUG - User:', user, '| ADMIN_USER set:', !!ADMIN_USER, '| ADMIN_PASSWORD set:', !!ADMIN_PASSWORD);
+  console.log('LOGIN DEBUG - User:', user, '| ADMIN_USER exists:', !!ADMIN_USER, '| ADMIN_PASSWORD exists:', !!ADMIN_PASSWORD);
   if (user === ADMIN_USER && pass === ADMIN_PASSWORD) {
     req.session.admin = true;
-    console.log('LOGIN SUCCESS - Session admin:', req.session.admin);
-    return res.json({ ok: true });
+    return req.session.save((err) => {
+      if (err) {
+        console.error('SESSION SAVE ERROR:', err);
+        return res.status(500).json({ error: 'Error guardando sesión' });
+      }
+      console.log('SESSION SAVED:', req.sessionID);
+      return res.json({ ok: true });
+    });
   }
   console.log('LOGIN FAILED - User match:', user === ADMIN_USER, '| Pass match:', pass === ADMIN_PASSWORD);
   res.status(401).json({ error: 'Credenciales inválidas' });
