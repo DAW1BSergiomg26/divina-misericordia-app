@@ -51,9 +51,17 @@ function requireAuth(req, res, next) {
 }
 
 app.post('/api/admin/login', (req, res) => {
-  const { user, pass } = req.body;
+  const user = String(req.body.user || req.body.username || '').trim();
+  const pass = String(req.body.pass || req.body.password || '').trim();
 
-  if (user === process.env.ADMIN_USER && pass === process.env.ADMIN_PASSWORD) {
+  const adminUser = String(process.env.ADMIN_USER || 'sacra').trim();
+  const adminPass = String(process.env.ADMIN_PASSWORD || 'Rufi14').trim();
+
+  console.log('LOGIN USER:', user);
+  console.log('LOGIN USER OK:', user === adminUser);
+  console.log('LOGIN PASS OK:', pass === adminPass);
+
+  if (user === adminUser && pass === adminPass) {
     req.session.admin = true;
 
     return req.session.save((err) => {
@@ -61,10 +69,14 @@ app.post('/api/admin/login', (req, res) => {
         console.error('SESSION SAVE ERROR:', err);
         return res.status(500).json({ error: 'Error guardando sesión' });
       }
-
-      console.log('SESSION OK:', req.sessionID);
+      console.log('SESSION SAVED:', req.sessionID);
       return res.json({ ok: true });
     });
+  }
+
+  console.log('LOGIN FAIL:', user, pass);
+  res.status(401).json({ error: 'Credenciales incorrectas' });
+});
   }
 
   console.log('LOGIN FAIL:', user, pass);

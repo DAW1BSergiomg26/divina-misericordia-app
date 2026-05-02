@@ -62,8 +62,8 @@
     if (localStorage.adminLogged === 'true') window.location.href = 'admin-panel.html';
 
     function login() {
-      const user = document.getElementById('user').value;
-      const pass = document.getElementById('pass').value;
+      const user = document.getElementById('user').value.trim();
+      const pass = document.getElementById('pass').value.trim();
       fetch('/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
