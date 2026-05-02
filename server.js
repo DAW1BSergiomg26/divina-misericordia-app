@@ -30,10 +30,11 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'divina-secret',
   resave: false,
   saveUninitialized: false,
+  proxy: true,
   cookie: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production' && req.headers['x-forwarded-proto'] === 'https',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    secure: false,
+    sameSite: 'none',
     maxAge: 24 * 60 * 60 * 1000
   }
 }));
