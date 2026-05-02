@@ -11,7 +11,7 @@ import { spawn, exec } from 'child_process';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // ✅ RUTA FIJA PARA RENDER: src/public
-const PUBLIC_DIR = path.join(__dirname, 'src', 'public');
+const PUBLIC_DIR = path.join(__dirname, 'public');
 
 console.log('PUBLIC_DIR:', PUBLIC_DIR);
 const LOG_FILE = path.join(__dirname, 'logs', 'admin-changes.log');
