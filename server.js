@@ -7,10 +7,12 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import 'dotenv/config';
 import { spawn, exec } from 'child_process';
+import RedisStore from 'connect-redis';
+import { createClient } from 'redis';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// ✅ RUTA FIJA PARA RENDER: src/public
+// ✅ RUTA FIJA PARA RENDER: public
 const PUBLIC_DIR = path.join(__dirname, 'public');
 
 console.log('PUBLIC_DIR:', PUBLIC_DIR);
@@ -26,11 +28,44 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Configurar Redis o fallback a MemoryStore
+let sessionStore;
+
+async function setupSessionStore() {
+  if (process.env.REDIS_URL) {
+    try {
+      const redisClient = createClient({
+        url: process.env.REDIS_URL
+      });
+
+      redisClient.on('error', (err) => {
+        console.error('Redis error:', err);
+      });
+
+      await redisClient.connect();
+      console.log('Redis conectado');
+
+      sessionStore = new RedisStore({
+        client: redisClient
+      });
+    } catch (err) {
+      console.error('Error conectando a Redis:', err.message);
+      console.warn('WARNING: REDIS_URL no válida. Usando MemoryStore solo para desarrollo local.');
+    }
+  } else {
+    console.warn('WARNING: REDIS_URL no definida. Usando MemoryStore solo para desarrollo local.');
+  }
+}
+
+await setupSessionStore();
+
 app.use(session({
+  store: sessionStore,
   secret: process.env.SESSION_SECRET || 'divina-secret',
   resave: false,
   saveUninitialized: false,
   proxy: true,
+  name: 'sacra.sid',
   cookie: {
     httpOnly: true,
     secure: false,
