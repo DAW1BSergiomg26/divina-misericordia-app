@@ -1,6 +1,5 @@
 import express from 'express';
 import session from 'express-session';
-import PgStore from 'connect-pg-simple';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import fs from 'fs';
@@ -8,18 +7,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import 'dotenv/config';
 import { spawn, exec } from 'child_process';
-
-const PgSessionStore = PgStore(session);
-const sessionStore = new PgSessionStore({
-  conString: process.env.DATABASE_URL,
-  ttl: 24 * 60 * 60 * 1000,
-});
-
-// ✅ Verificar si DATABASE_URL está configurada
-if (!process.env.DATABASE_URL) {
-  console.error('ERROR: DATABASE_URL no configurada en Render');
-  process.exit(1);
-}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -43,7 +30,6 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'divina-secret',
   resave: false,
   saveUninitialized: false,
-  store: sessionStore,
   proxy: true,
   cookie: {
     httpOnly: true,
