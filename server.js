@@ -9,7 +9,8 @@ import 'dotenv/config';
 import { spawn, exec } from 'child_process';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const PUBLIC_DIR = path.join(__dirname, 'public');
+const ROOT_DIR = __dirname;
+const PUBLIC_DIR = path.join(__dirname, 'src', 'public');
 const LOG_FILE = path.join(__dirname, 'logs', 'admin-changes.log');
 
 const app = express();
@@ -33,9 +34,10 @@ app.use(session({
 }));
 
 app.use(express.static(PUBLIC_DIR));
+app.use(express.static(ROOT_DIR));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(PUBLIC_DIR, 'index.html'));
+  res.sendFile(path.join(ROOT_DIR, 'index.html'));
 });
 
 function requireAuth(req, res, next) {
