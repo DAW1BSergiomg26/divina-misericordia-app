@@ -1,179 +1,227 @@
-# Divina Misericordia — Santuario Virtual
+# ✝ Divina Misericordia — Santuario Virtual PWA
 
-> Santuario virtual interactivo para rezar la Divina Misericordia, construido como PWA con Three.js.
+[![Demo Render](https://img.shields.io/badge/Demo-online-green?style=for-the-badge)](https://divina-misericordia-app.onrender.com)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js)](https://nodejs.org)
+[![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express)](https://expressjs.com)
+[![Three.js](https://img.shields.io/badge/Three.js-3D-black?style=for-the-badge&logo=three.js)](https://threejs.org)
+[![PWA](https://img.shields.io/badge/PWA-ready-5A0FC8?style=for-the-badge&logo=pwa)](https://web.dev/progressive-web-apps/)
+[![GitHub](https://img.shields.io/badge/GitHub-DAW1BSergiomg26-181717?style=for-the-badge&logo=github)](https://github.com/DAW1BSergiomg26/divina-misericordia-app)
 
-[![Live Demo](https://img.shields.io/badge/Demo-online-green)](https://daw1bsergiomg26.github.io/divina-misericordia-app/)
-[![GitHub](https://img.shields.io/badge/GitHub-DAW1BSergiomg26-181717?logo=github)](https://github.com/DAW1BSergiomg26/divina-misericordia-app)
+---
+
+## 🌐 Demo en Producción
+
+**https://divina-misericordia-app.onrender.com**
+
+---
 
 ## ✝ Descripción
 
-Aplicación web progresiva (PWA) que ofrece un entorno virtual para la oración, con escena 3D renderizada con Three.js, audio ambiental, síntesis de voz para oraciones y panel de administración seguro.
+Santuario virtual interactivo para la oración de la Divina Misericordia. Aplicación web progresiva (PWA) con escena 3D, audio ambiental y panel de administración.
 
-## 📂 Estructura del Proyecto
+---
+
+## ✨ Características Principales
+
+- **PWA Completa**: Instalable en móvil y escritorio
+- **Escena 3D**: Renderizado con Three.js
+- **Audio Ambiental**: Síntesis de voz para oraciones
+- **Panel Admin**: Gestión de contenido protegida
+- **Diseño Responsive**: Optimizado para móviles
+- **Service Worker**: Funcionalidad offline básica
+
+---
+
+## 🛠 Stack Tecnológico
+
+| Categoría | Tecnologías |
+|-----------|-------------|
+| **Frontend** | HTML5, CSS3, JavaScript ES6+ |
+| **3D / Visual** | Three.js, WebGL |
+| **Backend** | Node.js, Express |
+| **PWA** | Service Workers, Web App Manifest |
+| **Despliegue** | Render.com |
+| **Control Versiones** | Git, GitHub |
+
+---
+
+## 📸 Capturas de Pantalla
+
+> *Capturas próximamente*
+
+---
+
+## 📂 Estructura Actual del Proyecto
 
 ```
 divina-misericordia-app/
-├── public/                 # Archivos públicos
-│   ├── admin.html        # Login admin
-│   └── admin-panel.html # Panel de administración
-├── assets/
-│   └── icons/           # Iconos PWA (192x192, 512x512)
-├── src/
-│   ├── audio/
-│   │   └── audio.js     # Motor de audio y síntesis de voz
-│   ├── core/
-│   │   └── config.js    # Configuración central
-│   ├── prayers/
-│   │   ├── prayers.js   # Textos de oraciones
-│   │   └── rosary.js    # Motor de oraciones
-│   ├── scene/
-│   │   ├── renderer.js  # Texturas procedurales
-│   │   ├── scene.js     # Escena 3D (Three.js)
-│   │   └── state.js     # Estado de la escena
-│   ├── ui/
-│   │   └── ui.js        # Interfaz de usuario
-│   └── main.js          # Punto de entrada
-├── styles/
-│   ├── base.css         # Reset y variables
-│   ├── main.css         # Estilos principales
-│   ├── layout.css       # Disposición y responsive
-│   └── components.css   # Componentes UI
-├── scripts/
-│   └── send_email_report.py  # Reporte por correo
-├── backups/              # Backups automáticos (no sube a git)
-├── logs/                 # Logs de cambios (no sube a git)
-├── server.js             # Backend Node.js (admin, API, git auto-commit)
-├── index.html           # Entrada HTML
-├── manifest.json        # Configuración PWA
-├── service-worker.js    # Service Worker
-├── .env.example        # Ejemplo variables entorno
-├── .gitignore
-├── CHANGELOG.md
-└── README.md
+├── public/
+│   ├── index.html           # Página principal
+│   ├── admin.html           # Login administrador
+│   └── admin-panel.html     # Panel de administración
+├── src/                     # Código fuente frontend
+├── styles/                  # Hojas de estilo CSS
+├── assets/                  # Recursos (iconos, imágenes)
+├── scripts/                 # Scripts auxiliares
+├── server.js                # Servidor Express
+├── manifest.json            # Configuración PWA
+├── service-worker.js        # Service Worker
+├── package.json             # Dependencias Node.js
+└── .env.example             # Variables de entorno (ejemplo)
 ```
 
-## 🚀 Instalación
+---
 
-Requisitos:
-- Node.js 18+
-- Python 3 (opcional, para emails)
+## 🚀 Instalación Local
+
+### Requisitos
+- Node.js 18 o superior
+- npm
+
+### Pasos
 
 ```bash
 # Clonar repositorio
 git clone https://github.com/DAW1BSergiomg26/divina-misericordia-app.git
 cd divina-misericordia-app
 
-# Instalar dependencias backend
+# Instalar dependencias
 npm install
 
-# Configurar variables entorno
+# Configurar variables de entorno
 cp .env.example .env
-# Edita .env con tus datos reales
+# Editar .env con tus credenciales
+
+# Iniciar servidor
+npm start
 ```
 
-## 🏃 Ejecución Local
+La aplicación estará disponible en `http://localhost:3000`
+
+---
+
+## 🔐 Variables de Entorno
+
+Crea un archivo `.env` basado en `.env.example`:
 
 ```bash
-# Iniciar servidor (backend + frontend)
-node server.js
+# Administrador
+ADMIN_USER=tu_usuario
+ADMIN_PASSWORD=tu_contraseña
 
-# Abrir en navegador
-http://localhost:3000
+# Sesión
+SESSION_SECRET=clave_secreta_larga_y_segura
+
+# Configuración
+NODE_ENV=production
+PORT=3000
 ```
 
-## 🔐 Panel de Administración
+⚠️ **NUNCA subas el archivo `.env` al repositorio** (ya está en `.gitignore`)
 
-Accede a `http://localhost:3000/admin.html`:
-- Usuario: `sacra`
-- Contraseña: `Rufi14`
+---
+
+## 🌍 Despliegue en Render
+
+1. Conecta tu repositorio GitHub en [Render.com](https://render.com)
+2. Selecciona **Web Service**
+3. Configuración automática desde `render.yaml`
+4. Añade las variables de entorno en el dashboard de Render
+5. Despliegue automático con cada push a `main`
+
+---
+
+## 🔒 Panel de Administración
+
+Acceso: `https://tu-dominio.com/admin.html`
 
 **Funcionalidades:**
-- Editor de archivos HTML con preview en tiempo real
-- Buscador de páginas
-- Auto-refresh toggle
-- Historial undo/redo (máx 20)
-- Guardado con backup automático
-- Git auto-commit y tag restore
+- Autenticación con sesiones Express
+- Editor de contenido
+- Guardado con respaldo automático
 
-## 📧 Variables de Entorno (.env)
+**Estado actual:** En proceso de ajuste de persistencia de sesión en producción.
+
+---
+
+## ✅ Estado Actual
+
+### ✔ FUNCIONA
+- Web pública desplegada en Render
+- Servidor Express operativo
+- Rutas estáticas desde `public/`
+- API de login y sesión (backend)
+- PWA base instalable
+- Servicio de archivos estáticos
+
+### 🔄 EN PROCESO
+- Login admin desde navegador (ajuste de cookies)
+- Persistencia de sesión en producción
+- Implementación de Redis/Mongo store para sesiones
+
+---
+
+## ⚠️ Problemas Conocidos
+
+- **Sesiones en Render**: El almacenamiento en memoria (MemoryStore) no persiste entre instancias en el plan gratuito
+- **Cloudflare**: Posible interferencia con cookies `SameSite`
+- **Login navegador**: Requiere ajuste fino de credenciales y trim de espacios
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] Redis para sesiones persistentes
+- [ ] PWA offline completa (cache avanzado)
+- [ ] Mejoras de experiencia móvil
+- [ ] Optimización de assets (imágenes, audio)
+- [ ] Panel CMS visual avanzado
+- [ ] Modo oscuro
+- [ ] Soporte multiidioma
+
+---
+
+## 🔄 Restauración / Rollback
 
 ```bash
-# Admin
-ADMIN_USER=sacra
-ADMIN_PASSWORD=Rufi14
-SESSION_SECRET=clave_secreta_sesión_larga
-PORT=3000
+# Ver historial de commits
+git log --oneline
 
-# Email (Gmail)
-EMAIL_FROM=menu2informatico@gmail.com
-EMAIL_TO=menu2informatico@gmail.com
-EMAIL_PASSWORD=tu_contraseña_app_16_dígitos
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-```
+# Revertir un commit específico
+git revert <commit-hash>
 
-⚠️ **NUNCA subas `.env` al repositorio** (ya está en `.gitignore`)
-
-## 💾 Backups Automáticos
-
-Al guardar desde el panel admin:
-1. Se crea backup en `backups/YYYYMMDD-HHMMSS-archivo.html`
-2. Se registra en `logs/admin-changes.log`
-3. Se hace git commit automático: `fix: actualizar archivo desde admin`
-4. Se crea tag: `restore-YYYYMMDD-HHMMSS`
-
-## 🔄 Restaurar una Versión Anterior
-
-```bash
-# Listar puntos de restauración
-git tag
-
-# Volver a un punto específico
-git checkout restore-2026-04-30-1200
+# Volver a una versión anterior (cuidado: borra cambios locales)
+git reset --hard <commit-hash>
 
 # Volver a main
 git checkout main
-
-# Revertir un commit específico (mantiene historial)
-git revert <commit-hash>
-
-# Reset hard (CUIDADO: borra cambios locales)
-git reset --hard restore-2026-04-30-1200
 ```
 
-## 🌐 Despliegue
-
-### GitHub Pages (automático con push a main)
-1. Ve a **Settings > Pages**
-2. Selecciona **main** como fuente
-3. La app estará en: `https://daw1bsergiomg26.github.io/divina-misericordia-app/`
-
-### Otros hostings estáticos
-Sube todos los archivos excepto: `node_modules/`, `.env`, `backups/`, `logs/`
-
-## 📜 Convenciones de Commit
-
-- `init:` configuración inicial
-- `feat:` nueva funcionalidad
-- `fix:` corrección de error
-- `docs:` documentación
-- `refactor:` mejora interna sin cambiar comportamiento
-- `style:` cambios visuales
-- `chore:` mantenimiento
-- `restore:` punto de restauración
+---
 
 ## 🔒 Seguridad
 
-- Contraseñas solo en `.env` (nunca en código)
-- Sesiones con cookies httpOnly
-- Backend requerido para guardar cambios
+- Contraseñas almacenadas solo en variables de entorno
+- Sesiones con cookies `httpOnly`
 - Panel admin protegido por autenticación
 - `.gitignore` configurado para no subir archivos sensibles
+- Validación de entradas en API backend
 
-## 📞 Requisitos
+---
 
-- Navegador moderno con soporte para:
-  - ES Modules
-  - Service Workers
-  - WebGL (Three.js)
-  - SpeechSynthesis API
+## 👤 Autor
+
+**Sergio MG**
+
+- GitHub: [@DAW1BSergiomg26](https://github.com/DAW1BSergiomg26)
+- Proyecto: [divina-misericordia-app](https://github.com/DAW1BSergiomg26/divina-misericordia-app)
+
+---
+
+## 📄 Licencia
+
+Proyecto con fines educativos y de devoción personal.
+
+---
+
+*Última actualización: Mayo 2026*
