@@ -272,4 +272,9 @@ footer {
   .text-block {
     font-size: 0.84rem;
   }
+
+  img, iframe, canvas {
+    max-width: 100%;
+    height: auto;
+  }
 }

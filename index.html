@@ -10,7 +10,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=EB+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=EB+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
   <link rel="preload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" as="script" crossorigin>
 
@@ -102,7 +102,7 @@
 
       <div class="audio-controls">
         <button>⏮</button>
-        <button id="audio-btn" class="main-audio">⏸</button>
+        <button id="audio-btn" class="main-audio" aria-label="Reproducir o pausar música">⏸</button>
         <button>⏭</button>
       </div>
 
@@ -115,7 +115,7 @@
     <section class="left-card flower-card">
       <h3>🌹 Ofrecer Flores</h3>
       <p>María, Madre de la Misericordia, te ofrezco estas flores con amor, por Jesús y por las almas del mundo entero. Amén.</p>
-      <button id="flowers-btn">Ofrecer Flores</button>
+      <button id="flowers-btn" aria-label="Ofrecer flores a María">Ofrecer Flores</button>
     </section>
 
     <aside class="right-panel">
@@ -189,9 +189,9 @@
 
       <section class="panel-section">
         <div class="player-row">
-          <button id="prev-btn">⏪</button>
-          <button id="play-btn" class="play-main">▶</button>
-          <button id="reset-btn">■</button>
+      <button id="prev-btn" aria-label="Paso anterior">⏪</button>
+      <button id="play-btn" class="play-main" aria-label="Reproducir oración">▶</button>
+      <button id="reset-btn" aria-label="Reiniciar">■</button>
         </div>
       </section>
 
@@ -199,15 +199,15 @@
         <h2>Controles</h2>
 
         <div class="control-grid">
-          <button id="repeat-btn">
-            <span>↻</span>
-            Repetir
-          </button>
+      <button id="repeat-btn" aria-label="Repetir oración">
+        <span>↻</span>
+        Repetir
+      </button>
 
-          <button id="next-btn">
-            <span>🔖</span>
-            Continuar
-          </button>
+      <button id="next-btn" aria-label="Continuar con siguiente">
+        <span>🔖</span>
+        Continuar
+      </button>
         </div>
       </section>
 
@@ -221,11 +221,11 @@
         <strong>Jesús, En Vos Confío</strong>
         <span>Haz clic para escuchar</span>
       </div>
-      <button>✝</button>
+      <button aria-label="Escuchar Jesús, En Vos Confío">✝</button>
     </section>
 
     <section class="incense-card">
-      <button id="incense-btn">Ofrecer Incienso</button>
+      <button id="incense-btn" aria-label="Ofrecer incienso">Ofrecer Incienso</button>
       <p>Señor Jesús, te ofrezco este incienso como símbolo de mi oración que se eleva hasta tu Trono de Misericordia. Amén.</p>
     </section>
 
@@ -240,9 +240,9 @@
     </nav>
 
     <div class="footer-icons">
-      <button>⚙</button>
-      <button>🕯</button>
-      <button id="fullscreen-btn">⛶</button>
+      <button aria-label="Configuración">⚙</button>
+      <button aria-label="Vela">🕯</button>
+      <button id="fullscreen-btn" aria-label="Pantalla completa">⛶</button>
     </div>
 
     <div id="toast"></div>
