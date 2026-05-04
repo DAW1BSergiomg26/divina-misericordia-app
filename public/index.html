@@ -3,251 +3,1598 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Divina Misericordia — Santuario Virtual</title>
-
-  <meta name="theme-color" content="#070307" />
-  <link rel="manifest" href="manifest.json" />
-
+  <title>✝ Santuario de la Divina Misericordia</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=EB+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       DIVINA MISERICORDIA — SANTUARIO VIRTUAL
+       Nivel Premium · Experiencia Católica Diaria
+    ═══════════════════════════════════════════════════════════ */
 
-  <link rel="preload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" as="script" crossorigin>
+    :root {
+      --void:            #030108;
+      --abyss:           #060113;
+      --chapel:          #0C021A;
+      --velvet:          #140428;
 
-  <link rel="stylesheet" href="styles/base.css" />
-  <link rel="stylesheet" href="styles/main.css" />
-  <link rel="stylesheet" href="styles/layout.css" />
-  <link rel="stylesheet" href="styles/components.css" />
+      --gold-deep:       #7A5C1E;
+      --gold-mid:        #C9943C;
+      --gold-bright:     #D4AF37;
+      --gold-light:      #F0D060;
+      --gold-divine:     #FFE5A0;
+      --gold-glow:       rgba(212,175,55,.45);
 
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      --crimson-deep:    #3D0000;
+      --crimson:         #8B0015;
+      --crimson-mid:     #A61C2B;
+
+      --text-gold:       #D4AF37;
+      --text-ivory:      #F5F0E8;
+      --text-cream:      #E8D5B0;
+      --text-parchment:  #C4A882;
+      --text-shadow:     #8B7355;
+
+      --candle-amber:    #FF9F1C;
+      --candle-orange:   #FF7043;
+
+      --border-gold:        1px solid rgba(212,175,55,.28);
+      --border-gold-strong: 1px solid rgba(212,175,55,.65);
+
+      --stained-glass-1: rgba(139,0,21,.15);
+      --stained-glass-2: rgba(212,175,55,.08);
+      --stained-glass-3: rgba(64,0,128,.12);
     }
-  }
-  </script>
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html, body {
+      width:100%; height:100%;
+      overflow:hidden;
+      background: var(--void);
+      color: var(--text-ivory);
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size:16px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ═══ CANVAS & OVERLAYS ═══ */
+    #sacred-canvas {
+      position:fixed; inset:0; z-index:0; pointer-events:none;
+    }
+
+    .divine-rays {
+      position:fixed; inset:0; z-index:1; pointer-events:none; overflow:hidden;
+    }
+    .divine-rays::before {
+      content:'';
+      position:absolute;
+      width:220%; height:220%;
+      top:-60%; left:-60%;
+      background: conic-gradient(
+        from 0deg at 50% 38%,
+        transparent 0deg, transparent 2.5deg,
+        rgba(212,175,55,.022) 2.5deg, rgba(212,175,55,.032) 4.5deg,
+        transparent 4.5deg, transparent 8deg,
+        rgba(200,160,40,.014) 8deg, rgba(200,160,40,.022) 10.5deg,
+        transparent 10.5deg, transparent 15deg,
+        rgba(212,175,55,.018) 15deg, rgba(212,175,55,.028) 17.5deg,
+        transparent 17.5deg, transparent 23deg,
+        rgba(180,130,40,.010) 23deg, rgba(180,130,40,.018) 26deg,
+        transparent 26deg, transparent 34deg,
+        rgba(212,175,55,.024) 34deg, rgba(212,175,55,.034) 37deg,
+        transparent 37deg, transparent 50deg
+      );
+      animation: divineRotate 200s linear infinite;
+    }
+    .divine-rays::after {
+      content:'';
+      position:absolute;
+      width:220%; height:220%;
+      top:-60%; left:-60%;
+      background: conic-gradient(
+        from 70deg at 50% 38%,
+        transparent 0deg, transparent 3deg,
+        rgba(160,100,20,.012) 3deg, rgba(200,150,40,.020) 6deg,
+        transparent 6deg, transparent 12deg,
+        rgba(212,175,55,.016) 12deg, rgba(212,175,55,.024) 15.5deg,
+        transparent 15.5deg, transparent 22deg,
+        rgba(150,100,30,.008) 22deg, rgba(180,130,40,.016) 25deg,
+        transparent 25deg, transparent 40deg
+      );
+      animation: divineRotate 300s linear infinite reverse;
+    }
+    @keyframes divineRotate { to { transform: rotate(360deg); } }
+
+    .sacred-vignette {
+      position:fixed; inset:0; z-index:2; pointer-events:none;
+      background: radial-gradient(
+        ellipse at 50% 38%,
+        transparent 0%, transparent 25%,
+        rgba(3,1,8,.45) 55%,
+        rgba(3,1,8,.88) 100%
+      );
+    }
+
+    /* Stained glass background */
+    .stained-glass {
+      position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.4;
+      background:
+        radial-gradient(ellipse at 20% 20%, var(--stained-glass-1) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, var(--stained-glass-2) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, var(--stained-glass-3) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 80%, var(--stained-glass-2) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, var(--stained-glass-1) 0%, transparent 50%);
+    }
+
+    /* Angelic silhouettes */
+    .angelic-presence {
+      position:fixed; inset:0; z-index:3; pointer-events:none;
+    }
+    .angel-silhouette {
+      position:absolute;
+      width:60px; height:120px;
+      opacity:0.03;
+      background: radial-gradient(ellipse at 50% 30%, rgba(255,255,255,.8) 0%, transparent 70%);
+      filter: blur(2px);
+    }
+    .angel-1 { top:5%; left:3%; transform:rotate(-15deg); }
+    .angel-2 { top:10%; right:3%; transform:rotate(15deg) scaleX(-1); }
+    .angel-3 { bottom:15%; left:5%; transform:rotate(10deg); }
+
+    /* ═══ LOADING ═══ */
+    #loading {
+      position:fixed; inset:0; z-index:1000;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.2rem;
+      background: var(--void);
+      transition: opacity .9s ease, visibility .9s ease;
+    }
+    #loading.hidden { opacity:0; visibility:hidden; }
+
+    .loader-cross {
+      font-size:4.5rem; color: var(--gold-bright);
+      animation: crossPulse 2.2s ease-in-out infinite;
+      text-shadow: 0 0 50px rgba(212,175,55,.9);
+    }
+    @keyframes crossPulse {
+      0%,100% { opacity:.65; transform:scale(1);
+                 text-shadow: 0 0 40px rgba(212,175,55,.6); }
+      50%      { opacity:1; transform:scale(1.08);
+                 text-shadow: 0 0 90px rgba(212,175,55,1), 0 0 160px rgba(212,175,55,.4); }
+    }
+    .loader-title {
+      font-family:'Cinzel Decorative',serif; font-size:2.1rem; font-weight:700;
+      color: var(--gold-light); letter-spacing:.18em;
+      text-shadow: 0 0 35px rgba(212,175,55,.6);
+    }
+    .loader-sub {
+      font-family:'EB Garamond',serif; font-style:italic; font-size:1.2rem;
+      color: var(--text-parchment); letter-spacing:.22em;
+    }
+    .loader-bar {
+      width:220px; height:2px; background:rgba(212,175,55,.15); border-radius:1px; overflow:hidden;
+    }
+    .loader-bar-fill {
+      height:100%; width:0%;
+      background: linear-gradient(90deg, var(--gold-deep), var(--gold-bright), var(--gold-divine));
+      animation: loaderFill 2.7s ease-in-out forwards;
+    }
+    @keyframes loaderFill { to { width:100%; } }
+
+    /* ═══ APP GRID ═══ */
+    #app {
+      position:relative; z-index:10;
+      width:100vw; height:100vh;
+      display:grid;
+      grid-template-columns: 70px 268px 1fr 308px;
+      grid-template-rows: 54px 1fr 50px;
+      grid-template-areas:
+        "brand brand  brand  brand"
+        "rail  lcards center right"
+        "bot   bot    bot    bot";
+      overflow:hidden;
+    }
+
+    /* ═══ BRAND HEADER ═══ */
+    .brand-header {
+      grid-area:brand;
+      display:flex; align-items:center; justify-content:center;
+      padding:0 1.5rem; gap:1.2rem;
+      background: linear-gradient(180deg, rgba(3,1,8,.98) 0%, rgba(8,2,20,.88) 100%);
+      border-bottom: var(--border-gold);
+      position:relative; z-index:20;
+    }
+    .brand-header::after {
+      content:'';
+      position:absolute; bottom:-1px; left:50%; transform:translateX(-50%);
+      width:240px; height:1px;
+      background: linear-gradient(90deg,transparent,var(--gold-light),transparent);
+    }
+    .ornament-line {
+      flex:1; height:1px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,.38));
+    }
+    .ornament-line.right {
+      background: linear-gradient(270deg, transparent, rgba(212,175,55,.38));
+    }
+    .brand-seal {
+      width:38px; height:38px; border:1px solid var(--gold-bright);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.3rem; color:var(--gold-light);
+      transform:rotate(45deg);
+      box-shadow: 0 0 22px rgba(212,175,55,.35);
+      flex-shrink:0;
+    }
+    .brand-seal span { transform:rotate(-45deg); display:block; }
+    .brand-title {
+      font-family:'Cinzel Decorative',serif; font-size:1.25rem; font-weight:700;
+      letter-spacing:.18em; color:var(--gold-light); line-height:1.25;
+      text-shadow: 0 0 22px rgba(212,175,55,.5);
+    }
+    .brand-title small {
+      display:block; font-family:'EB Garamond',serif; font-size:.65rem;
+      font-style:italic; font-weight:400; color:var(--text-parchment);
+      letter-spacing:.38em;
+    }
+
+    /* Level selector */
+    .level-selector {
+      display:flex; gap:4px; margin-left:auto;
+    }
+    .level-btn {
+      padding:3px 8px; border:1px solid rgba(212,175,55,.25);
+      background:transparent; color:var(--text-shadow); cursor:pointer;
+      font-family:'Cinzel',serif; font-size:.55rem; letter-spacing:.1em;
+      transition:all .3s ease; border-radius:2px;
+    }
+    .level-btn:hover, .level-btn.active {
+      background:rgba(212,175,55,.12); color:var(--gold-light);
+      border-color:var(--gold-mid);
+    }
+
+    /* ═══ LEFT RAIL ═══ */
+    .left-rail {
+      grid-area:rail;
+      display:flex; flex-direction:column; align-items:center;
+      padding:.6rem 0; gap:2px;
+      background:rgba(3,1,8,.94);
+      border-right: var(--border-gold);
+      overflow-y:auto;
+    }
+    .rail-btn {
+      width:50px; height:52px; border:none; background:transparent;
+      color:var(--text-shadow); cursor:pointer; border-radius:6px;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+      font-size:1.15rem; transition:all .3s ease; position:relative;
+    }
+    .rail-btn .rlabel {
+      font-size:.4rem; font-family:'Cinzel',serif; letter-spacing:.06em;
+      text-transform:uppercase; color:var(--text-shadow); transition:color .3s;
+    }
+    .rail-btn:hover, .rail-btn.active {
+      color:var(--gold-light); background:rgba(212,175,55,.07);
+    }
+    .rail-btn.active::before {
+      content:''; position:absolute; left:0; top:50%; transform:translateY(-50%);
+      width:2px; height:68%; background:var(--gold-bright);
+      box-shadow:0 0 8px var(--gold-bright); border-radius:0 2px 2px 0;
+    }
+    .rail-btn.active .rlabel { color:var(--gold-mid); }
+    .rail-sep { width:28px; height:1px; background:rgba(212,175,55,.18); margin:3px 0; }
+
+    /* ═══ LEFT CARDS ═══ */
+    .left-cards {
+      grid-area:lcards;
+      display:flex; flex-direction:column; padding:.75rem;
+      gap:.75rem; overflow-y:auto;
+      background:rgba(4,1,10,.75); border-right:var(--border-gold);
+    }
+
+    /* ═══ SACRED CARD ═══ */
+    .scard {
+      background: linear-gradient(135deg,rgba(20,4,42,.92) 0%,rgba(8,2,22,.96) 100%);
+      border:var(--border-gold); border-radius:1px;
+      padding:.85rem 1rem; position:relative; overflow:hidden;
+    }
+    .scard::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:1px;
+      background:linear-gradient(90deg,transparent,var(--gold-bright),transparent);
+    }
+    .scard-title {
+      font-family:'Cinzel',serif; font-size:.6rem; letter-spacing:.28em;
+      text-transform:uppercase; color:var(--text-shadow); margin-bottom:.55rem;
+    }
+
+    /* Audio */
+    .audio-label {
+      font-family:'EB Garamond',serif; font-style:italic; font-size:.92rem;
+      color:var(--text-cream); margin-bottom:.5rem;
+    }
+    .wave {
+      display:flex; align-items:center; justify-content:center; gap:3px;
+      height:30px; margin-bottom:.7rem;
+    }
+    .wave span {
+      width:3px; background:var(--gold-bright); border-radius:2px;
+      box-shadow:0 0 6px rgba(212,175,55,.4);
+      animation: waveDance var(--wd,1.2s) ease-in-out infinite;
+    }
+    .wave span:nth-child(1){--wd:.80s;height:7px}
+    .wave span:nth-child(2){--wd:1.05s;height:15px}
+    .wave span:nth-child(3){--wd:.72s;height:24px}
+    .wave span:nth-child(4){--wd:1.15s;height:19px}
+    .wave span:nth-child(5){--wd:.90s;height:12px}
+    .wave span:nth-child(6){--wd:1.30s;height:27px}
+    .wave span:nth-child(7){--wd:.76s;height:17px}
+    .wave span:nth-child(8){--wd:1.08s;height:13px}
+    .wave span:nth-child(9){--wd:.85s;height:21px}
+    .wave span:nth-child(10){--wd:1.22s;height:9px}
+    @keyframes waveDance {
+      0%,100% { transform:scaleY(.35); opacity:.55; }
+      50%      { transform:scaleY(1);   opacity:1; }
+    }
+    .audio-controls {
+      display:flex; align-items:center; justify-content:center; gap:.85rem; margin-bottom:.5rem;
+    }
+    .vol-row {
+      display:flex; align-items:center; gap:.4rem; font-size:.78rem; color:var(--gold-mid);
+    }
+    .vol-track {
+      flex:1; height:3px; background:rgba(212,175,55,.12); border-radius:2px;
+      cursor:pointer; position:relative;
+    }
+    .vol-fill {
+      position:absolute; left:0; top:0; bottom:0; width:65%;
+      background:linear-gradient(90deg,var(--gold-deep),var(--gold-bright));
+      border-radius:2px;
+    }
+
+    /* Buttons */
+    .btn-s {
+      border:var(--border-gold); background:rgba(212,175,55,.04);
+      color:var(--text-parchment); cursor:pointer; transition:all .3s ease;
+      font-family:'EB Garamond',serif; display:flex; align-items:center; justify-content:center;
+    }
+    .btn-s:hover { background:rgba(212,175,55,.14); color:var(--gold-light); box-shadow:0 0 14px rgba(212,175,55,.2); }
+    .btn-icon { width:30px; height:30px; border-radius:50%; font-size:.82rem; }
+    .btn-icon.main {
+      width:44px; height:44px; border:1px solid var(--gold-bright);
+      background:rgba(212,175,55,.1); color:var(--gold-light); font-size:1.1rem;
+      box-shadow:0 0 20px rgba(212,175,55,.18);
+    }
+    .btn-icon.main:hover { background:rgba(212,175,55,.22); box-shadow:0 0 35px rgba(212,175,55,.38); }
+    .btn-full { width:100%; padding:.42rem .8rem; font-size:.82rem; letter-spacing:.1em; border-radius:1px; }
+
+    /* Candles */
+    .candles-row {
+      display:flex; justify-content:center; gap:1.3rem; padding:.6rem 0;
+    }
+    .candle { display:flex; flex-direction:column; align-items:center; gap:2px; cursor:pointer; }
+    .candle-flame { width:14px; height:22px; position:relative; }
+    .f-inner {
+      position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+      width:9px; height:16px;
+      background:radial-gradient(ellipse at 50% 80%, #FFF8DC 0%,var(--candle-amber) 40%,var(--candle-orange) 80%,transparent 100%);
+      border-radius:50% 50% 28% 28%;
+      animation:flicker var(--fd,1.5s) ease-in-out infinite alternate;
+      box-shadow:0 0 10px 3px rgba(255,159,28,.45);
+    }
+    .f-outer {
+      position:absolute; bottom:-2px; left:50%; transform:translateX(-50%);
+      width:14px; height:18px;
+      background:radial-gradient(ellipse at 50% 80%, rgba(255,200,50,.28) 0%,transparent 70%);
+      border-radius:50% 50% 28% 28%;
+      animation:flicker var(--fd,1.5s) .28s ease-in-out infinite alternate;
+    }
+    @keyframes flicker {
+      0%   { transform:translateX(-50%) scaleX(1) scaleY(1); }
+      30%  { transform:translateX(-47%) scaleX(.88) scaleY(1.07); }
+      65%  { transform:translateX(-53%) scaleX(1.12) scaleY(.93); }
+      100% { transform:translateX(-50%) scaleX(.94) scaleY(1.1); }
+    }
+    .candle-body {
+      width:11px; height:45px;
+      background:linear-gradient(180deg,#F5F0E8 0%,#D4C9B0 50%,#C0B090 100%);
+      border-radius:1px; position:relative; box-shadow:1px 0 4px rgba(0,0,0,.5);
+    }
+    .candle-body::before {
+      content:''; position:absolute; left:2px; top:6px; width:2px; height:72%;
+      background:rgba(255,255,255,.28); border-radius:1px;
+    }
+    .candle-base {
+      width:15px; height:4px;
+      background:linear-gradient(180deg,var(--gold-mid),var(--gold-deep));
+      border-radius:1px;
+    }
+
+    /* Flower / incense */
+    .offer-text {
+      font-style:italic; font-size:.82rem; color:var(--text-parchment);
+      line-height:1.65; margin-bottom:.8rem;
+    }
+
+    /* Intentions */
+    .intention-input {
+      width:100%; padding:.4rem; margin-bottom:.5rem;
+      background:rgba(212,175,55,.06); border:var(--border-gold);
+      color:var(--text-cream); font-family:'EB Garamond',serif;
+      font-size:.85rem; resize:vertical; min-height:60px;
+    }
+    .intention-input::placeholder { color:var(--text-shadow); }
+    .intention-list {
+      list-style:none; max-height:120px; overflow-y:auto;
+    }
+    .intention-item {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:.3rem .5rem; margin-bottom:.3rem;
+      background:rgba(212,175,55,.04); border-left:2px solid var(--gold-mid);
+      font-size:.78rem; color:var(--text-cream);
+    }
+    .intention-remove {
+      background:none; border:none; color:var(--crimson-mid);
+      cursor:pointer; font-size:.9rem; padding:0 .3rem;
+    }
+
+    /* ═══ CENTER SANCTUARY ═══ */
+    .center-sanctuary {
+      grid-area:center;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      position:relative; padding:1.5rem 2rem; overflow:hidden;
+    }
+
+    /* Gothic arch ornament */
+    .gothic-arch {
+      position:absolute; top:0; left:50%; transform:translateX(-50%);
+      width:280px; height:90px;
+      border:1px solid rgba(212,175,55,.18);
+      border-bottom:none; border-radius:140px 140px 0 0;
+      pointer-events:none;
+    }
+    .gothic-arch::after {
+      content:''; position:absolute; top:10px; left:10px; right:10px; bottom:0;
+      border:1px solid rgba(212,175,55,.08);
+      border-bottom:none; border-radius:120px 120px 0 0;
+    }
+
+    /* Retablo with 3D effect */
+    .retablo {
+      position:relative; display:flex; flex-direction:column; align-items:center;
+      margin-bottom:1.4rem;
+      transform-style:preserve-3d;
+      perspective:800px;
+    }
+    .retablo-rays {
+      position:absolute; inset:-30px;
+      background:radial-gradient(ellipse at 50% 50%, rgba(212,175,55,.07) 0%,transparent 70%);
+      animation:retabloPulse 4s ease-in-out infinite;
+      pointer-events:none;
+    }
+    @keyframes retabloPulse { 0%,100%{opacity:.6} 50%{opacity:1} }
+
+    .retablo-frame {
+      width:194px; height:254px; position:relative;
+      border:2px solid rgba(212,175,55,.38);
+      background:linear-gradient(170deg,rgba(18,4,38,.92) 0%,rgba(4,1,12,.96) 100%);
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.9rem;
+      box-shadow:0 0 50px rgba(212,175,55,.1), inset 0 0 35px rgba(212,175,55,.05);
+      transform:rotateY(-5deg) rotateX(2deg);
+      transition:transform .5s ease;
+    }
+    .retablo-frame:hover {
+      transform:rotateY(0deg) rotateX(0deg) scale(1.02);
+    }
+    .corner {
+      position:absolute; color:var(--gold-bright); font-size:.9rem; opacity:.75;
+    }
+    .corner.tl { top:-7px; left:-7px; }
+    .corner.tr { top:-7px; right:-7px; }
+    .corner.bl { bottom:-7px; left:-7px; }
+    .corner.br { bottom:-7px; right:-7px; }
+
+    .retablo-cross {
+      font-size:5.5rem; color:var(--gold-bright);
+      text-shadow:0 0 45px rgba(212,175,55,.7), 0 0 90px rgba(212,175,55,.35);
+      animation:crossBreathe 4.5s ease-in-out infinite;
+    }
+    @keyframes crossBreathe {
+      0%,100%{ text-shadow:0 0 45px rgba(212,175,55,.7),  0 0 90px rgba(212,175,55,.35); }
+      50%    { text-shadow:0 0 70px rgba(212,175,55,1), 0 0 140px rgba(212,175,55,.55),
+                            0 0 200px rgba(212,175,55,.2); }
+    }
+    .retablo-quote {
+      font-family:'EB Garamond',serif; font-style:italic; font-size:.88rem;
+      color:var(--text-parchment); text-align:center; letter-spacing:.04em; line-height:1.45;
+    }
+    .retablo-sub {
+      font-family:'Cinzel',serif; font-size:.52rem; letter-spacing:.32em;
+      color:var(--gold-mid); text-transform:uppercase; margin-top:.7rem; text-align:center;
+    }
+
+    /* Mercy countdown */
+    .mercy-hub { text-align:center; max-width:440px; }
+    .mercy-badge {
+      display:inline-flex; align-items:center; gap:.5rem;
+      padding:4px 1.2rem;
+      border:1px solid rgba(212,175,55,.48);
+      background:rgba(139,0,21,.22);
+      font-family:'Cinzel',serif; font-size:.66rem; letter-spacing:.22em;
+      color:var(--gold-light); margin-bottom:1rem;
+    }
+    .mercy-clock {
+      font-family:'Cinzel',serif; font-size:2.6rem; font-weight:700;
+      color:var(--gold-light); letter-spacing:.08em;
+      text-shadow:0 0 35px rgba(212,175,55,.45); margin-bottom:.3rem;
+    }
+    .mercy-hint {
+      font-family:'EB Garamond',serif; font-style:italic; font-size:.95rem;
+      color:var(--text-parchment); margin-bottom:1.4rem;
+    }
+
+    /* Divider */
+    .sacred-divider {
+      display:flex; align-items:center; gap:.9rem; width:100%; max-width:400px; margin:.9rem 0;
+    }
+    .sacred-divider::before, .sacred-divider::after {
+      content:''; flex:1; height:1px;
+      background:linear-gradient(90deg,transparent,rgba(212,175,55,.38));
+    }
+    .sacred-divider::after { background:linear-gradient(270deg,transparent,rgba(212,175,55,.38)); }
+    .div-ornament { color:var(--gold-bright); font-size:.78rem; opacity:.72; }
+
+    /* Prayer display */
+    .prayer-display { max-width:460px; text-align:center; }
+    .pd-title {
+      font-family:'Cinzel Decorative',serif; font-size:1rem;
+      color:var(--gold-light); letter-spacing:.1em; margin-bottom:.7rem;
+      text-shadow:0 0 18px rgba(212,175,55,.4);
+    }
+    .pd-text {
+      font-family:'EB Garamond',serif; font-size:1.15rem; line-height:1.85;
+      color:var(--text-cream); font-style:italic;
+      max-height:200px; overflow-y:auto; padding:0 1rem;
+    }
+    .pd-text::first-letter {
+      font-family:'UnifrakturMaguntia',serif; font-size:3.4rem; font-style:normal;
+      float:left; line-height:.82; margin-right:5px;
+      color:var(--gold-bright); text-shadow:0 0 18px rgba(212,175,55,.65);
+    }
+    .pd-guide {
+      font-family:'Cinzel',serif; font-size:.7rem; letter-spacing:.15em;
+      color:var(--gold-mid); margin-top:.8rem; font-style:italic;
+      opacity:0.8;
+    }
+
+    /* ═══ RIGHT PANEL ═══ */
+    .right-panel {
+      grid-area:right;
+      display:flex; flex-direction:column;
+      background:rgba(4,1,10,.88); border-left:var(--border-gold);
+      overflow-y:auto; padding:.75rem; gap:.75rem;
+    }
+    .phead {
+      font-family:'Cinzel',serif; font-size:.58rem; letter-spacing:.35em;
+      text-transform:uppercase; color:var(--text-shadow); margin-bottom:.35rem;
+    }
+    .ptitle {
+      font-family:'Cinzel Decorative',serif; font-size:1rem; font-weight:700;
+      color:var(--gold-light); line-height:1.3; margin-bottom:.4rem;
+      text-shadow:0 0 14px rgba(212,175,55,.3);
+    }
+
+    /* Pulse dot */
+    .mercy-pill-sm {
+      display:inline-flex; align-items:center; gap:6px; padding:3px 10px;
+      background:rgba(139,0,21,.28); border:1px solid rgba(160,28,43,.42);
+      font-family:'Cinzel',serif; font-size:.62rem; letter-spacing:.18em; color:#E8A0A0;
+      margin-bottom:.4rem;
+    }
+    .pdot {
+      width:6px; height:6px; background:var(--crimson-mid); border-radius:50%;
+      animation:pdotPulse 2s ease-in-out infinite;
+    }
+    @keyframes pdotPulse {
+      0%,100%{opacity:.5;transform:scale(1)}
+      50%{opacity:1;transform:scale(1.35);box-shadow:0 0 6px var(--crimson-mid)}
+    }
+
+    /* Prayer list items */
+    .pli {
+      display:flex; align-items:center; gap:.75rem;
+      padding:.45rem .8rem; border:var(--border-gold);
+      background:rgba(212,175,55,.02); cursor:pointer; transition:all .3s ease;
+      position:relative; margin-bottom:5px;
+    }
+    .pli:hover { background:rgba(212,175,55,.07); border-color:rgba(212,175,55,.48); }
+    .pli.active { background:rgba(212,175,55,.09); border-color:rgba(212,175,55,.58); }
+    .pli.active::before {
+      content:''; position:absolute; left:0; top:0; bottom:0;
+      width:2px; background:var(--gold-bright); box-shadow:0 0 8px var(--gold-bright);
+    }
+    .pli-icon {
+      width:30px; height:30px; border:var(--border-gold);
+      display:flex; align-items:center; justify-content:center;
+      font-size:.88rem; flex-shrink:0; color:var(--gold-mid);
+    }
+    .pli-name {
+      font-family:'Cinzel',serif; font-size:.7rem; letter-spacing:.05em; color:var(--text-cream);
+      display:block;
+    }
+    .pli-time { font-size:.65rem; color:var(--text-shadow); }
+
+    /* Progress */
+    .prog-track {
+      width:100%; height:4px; background:rgba(212,175,55,.09); border-radius:2px; overflow:hidden; margin-bottom:.45rem;
+    }
+    .prog-fill {
+      height:100%; width:0%; border-radius:2px; transition:width .5s ease;
+      background:linear-gradient(90deg,var(--gold-deep),var(--gold-bright),var(--gold-light));
+      box-shadow:0 0 9px rgba(212,175,55,.45);
+    }
+    .prog-meta { display:flex; justify-content:space-between; align-items:center; }
+    .prog-count { font-family:'Cinzel',serif; font-size:.62rem; letter-spacing:.08em; color:var(--text-parchment); }
+    .prog-pct   { font-family:'Cinzel',serif; font-size:.88rem; color:var(--gold-bright); }
+
+    /* Player */
+    .player-row {
+      display:flex; align-items:center; justify-content:center; gap:.9rem; padding:.6rem 0;
+    }
+    .play-main {
+      width:56px; height:56px; border-radius:50%;
+      border:2px solid var(--gold-bright); background:rgba(212,175,55,.1);
+      color:var(--gold-light); font-size:1.3rem; cursor:pointer; transition:all .3s ease;
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 0 22px rgba(212,175,55,.22);
+    }
+    .play-main:hover { background:rgba(212,175,55,.22); box-shadow:0 0 45px rgba(212,175,55,.42); transform:scale(1.06); }
+
+    /* Speed grid */
+    .speed-grid {
+      display:grid; grid-template-columns:1fr 1fr 1fr; gap:5px; margin-top:.5rem;
+    }
+    .spd-btn {
+      padding:.4rem; text-align:center; font-family:'Cinzel',serif;
+      font-size:.58rem; letter-spacing:.08em; cursor:pointer; transition:all .3s ease;
+    }
+    .spd-btn.active {
+      border-color:var(--gold-bright) !important;
+      background:rgba(212,175,55,.12) !important;
+      color:var(--gold-light) !important;
+    }
+
+    /* Prayer text box */
+    .prayer-box {
+      background:rgba(212,175,55,.025); border:var(--border-gold);
+      padding:.8rem; max-height:170px; overflow-y:auto;
+    }
+    .prayer-box p {
+      font-style:italic; font-size:.88rem; line-height:1.72; color:var(--text-cream);
+    }
+
+    /* History */
+    .history-list {
+      list-style:none; max-height:150px; overflow-y:auto;
+    }
+    .history-item {
+      padding:.35rem .5rem; margin-bottom:.3rem;
+      background:rgba(212,175,55,.04); border-left:2px solid var(--gold-deep);
+      font-size:.75rem; color:var(--text-cream);
+    }
+    .history-item .history-date {
+      display:block; font-family:'Cinzel',serif; font-size:.6rem;
+      color:var(--text-shadow); letter-spacing:.08em;
+    }
+
+    /* ═══ BOTTOM NAV ═══ */
+    .bottom-nav {
+      grid-area:bot; display:flex; align-items:center;
+      background:rgba(3,1,8,.97); border-top:var(--border-gold);
+      padding:0 .75rem; height:50px; position:relative;
+    }
+    .bottom-nav::before {
+      content:''; position:absolute; top:-1px; left:50%; transform:translateX(-50%);
+      width:200px; height:1px;
+      background:linear-gradient(90deg,transparent,var(--gold-light),transparent);
+    }
+    .bot-btn {
+      flex:1; height:100%; border:none; background:transparent;
+      color:var(--text-shadow); cursor:pointer;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px;
+      font-size:.88rem; transition:all .3s ease; position:relative;
+    }
+    .bot-btn .blabel {
+      font-family:'Cinzel',serif; font-size:.4rem; letter-spacing:.07em; text-transform:uppercase;
+    }
+    .bot-btn.active { color:var(--gold-light); }
+    .bot-btn.active::before {
+      content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
+      width:28px; height:2px;
+      background:var(--gold-bright); box-shadow:0 0 8px var(--gold-bright);
+    }
+    .bot-btn:hover:not(.active) { color:var(--text-parchment); }
+
+    .footer-icons {
+      position:absolute; right:.75rem; display:flex; gap:.4rem;
+    }
+    .ficon {
+      width:30px; height:30px; border:var(--border-gold); background:transparent;
+      color:var(--text-shadow); cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      font-size:.82rem; transition:all .3s ease;
+    }
+    .ficon:hover { color:var(--gold-bright); border-color:rgba(212,175,55,.5); }
+    .ficon.active { color:var(--gold-light); border-color:var(--gold-mid); }
+
+    /* ═══ TOAST ═══ */
+    #toast {
+      position:fixed; bottom:65px; left:50%; transform:translateX(-50%) translateY(90px);
+      background:linear-gradient(135deg,rgba(20,4,42,.98),rgba(8,2,22,.98));
+      border:var(--border-gold-strong); padding:.45rem 1.5rem;
+      font-family:'EB Garamond',serif; font-style:italic; font-size:.95rem; color:var(--text-cream);
+      z-index:200; transition:transform .4s ease; white-space:nowrap;
+      box-shadow:0 0 30px rgba(212,175,55,.22);
+    }
+    #toast.show { transform:translateX(-50%) translateY(0); }
+
+    /* ═══ SCROLLBAR ═══ */
+    ::-webkit-scrollbar { width:4px; }
+    ::-webkit-scrollbar-track { background:rgba(212,175,55,.04); }
+    ::-webkit-scrollbar-thumb { background:rgba(212,175,55,.2); border-radius:2px; }
+
+    @media(max-width:1100px) {
+      #app { grid-template-columns:70px 240px 1fr 280px; }
+    }
+    @media(max-width:880px) {
+      #app {
+        grid-template-columns:60px 1fr;
+        grid-template-areas:"brand brand" "rail center" "bot bot";
+        overflow:auto;
+      }
+      .left-cards,.right-panel { display:none; }
+      .left-cards.show-mobile { display:flex; position:absolute; left:60px; top:54px; bottom:50px; width:240px; z-index:30; }
+      .right-panel.show-mobile { display:flex; position:absolute; right:0; top:54px; bottom:50px; width:280px; z-index:30; }
+      .mobile-toggle { display:block !important; }
+    }
+
+    .mobile-toggle { display:none; position:absolute; top:60px; z-index:40;
+      background:rgba(3,1,8,.95); border:var(--border-gold); color:var(--gold-light);
+      padding:.3rem .6rem; cursor:pointer; font-size:.7rem; }
+
+    /* Contemplative mode */
+    .contemplative .left-cards,
+    .contemplative .right-panel,
+    .contemplative .left-rail,
+    .contemplative .bottom-nav { display:none !important; }
+    .contemplative #app {
+      grid-template-columns:1fr;
+      grid-template-areas:"brand" "center" "bot";
+    }
+    .contemplative .brand-header { justify-content:center; }
+    .contemplative .center-sanctuary { justify-content:center; }
+  </style>
 </head>
-
 <body>
-  <noscript>Esta aplicación necesita JavaScript activado.</noscript>
 
-  <div id="loading">
-    <div class="loader-mark">✝</div>
-    <h1>Divina Misericordia</h1>
-    <p>Jesús, En Vos Confío</p>
-  </div>
+<!-- CANVAS: Sacred particle motes -->
+<canvas id="sacred-canvas"></canvas>
+<!-- STAINED GLASS -->
+<div class="stained-glass"></div>
+<!-- DIVINE RAYS overlay -->
+<div class="divine-rays"></div>
+<!-- ANGELIC PRESENCE -->
+<div class="angelic-presence">
+  <div class="angel-silhouette angel-1"></div>
+  <div class="angel-silhouette angel-2"></div>
+  <div class="angel-silhouette angel-3"></div>
+</div>
+<!-- VIGNETTE -->
+<div class="sacred-vignette"></div>
 
-  <div id="app">
-    <main id="scene-root" aria-label="Santuario virtual"></main>
+<!-- ═══ LOADING SCREEN ═══ -->
+<div id="loading">
+  <div class="loader-cross">✝</div>
+  <div class="loader-title">Divina Misericordia</div>
+  <div class="loader-sub">Jesús, en Vos confío</div>
+  <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+</div>
 
-    <header class="brand">
-      <div class="brand-seal">✝</div>
-      <div>
-        <strong>Divina</strong>
-        <span>Misericordia</span>
-      </div>
-    </header>
+<!-- ═══ APP ═══ -->
+<div id="app">
 
-    <aside class="left-rail">
-      <button class="nav-item active" data-mode="mercy">
-        <span>✦</span>
-        Oración actual
-      </button>
+  <!-- BRAND HEADER -->
+  <header class="brand-header">
+    <div class="ornament-line"></div>
+    <div class="brand-seal"><span>✝</span></div>
+    <div class="brand-title">
+      Divina Misericordia
+      <small>Santuario Virtual · Jesús, en Vos Confío</small>
+    </div>
+    <div class="level-selector">
+      <button class="level-btn" data-level="novato" onclick="setLevel('novato')" aria-label="Nivel Novato">Novato</button>
+      <button class="level-btn active" data-level="intermedio" onclick="setLevel('intermedio')" aria-label="Nivel Intermedio">Intermedio</button>
+      <button class="level-btn" data-level="experto" onclick="setLevel('experto')" aria-label="Nivel Experto">Experto</button>
+    </div>
+    <div class="ornament-line right"></div>
+  </header>
 
-      <button class="nav-item" data-mode="rosary">
-        <span>📿</span>
-        Santo Rosario
-      </button>
+  <!-- LEFT RAIL -->
+  <aside class="left-rail">
+    <button class="rail-btn active" data-mode="mercy" title="Hora de la Misericordia" onclick="selectPrayer('mercy',this)" aria-label="Hora de la Misericordia">
+      <span style="font-size:1.2rem">✦</span><span class="rlabel">Oración</span>
+    </button>
+    <button class="rail-btn" data-mode="chaplet" title="Coronilla" onclick="selectPrayer('chaplet',this)" aria-label="Coronilla de la Divina Misericordia">
+      <span style="font-size:1.05rem">☀</span><span class="rlabel">Coronilla</span>
+    </button>
+    <button class="rail-btn" data-mode="rosary" title="Santo Rosario" onclick="selectPrayer('rosary',this)" aria-label="Santo Rosario">
+      <span style="font-size:1.05rem">📿</span><span class="rlabel">Rosario</span>
+    </button>
+    <button class="rail-btn" data-mode="novena" title="Novena" onclick="selectPrayer('novena',this)" aria-label="Novena a la Divina Misericordia">
+      <span style="font-size:1.05rem">▣</span><span class="rlabel">Novena</span>
+    </button>
+    <button class="rail-btn" data-mode="cross" title="Vía Crucis" onclick="selectPrayer('cross',this)" aria-label="Vía Crucis">
+      <span style="font-size:1.05rem">✝</span><span class="rlabel">Vía Crucis</span>
+    </button>
+    <button class="rail-btn" data-mode="brief" title="Oraciones Breves" onclick="selectPrayer('brief',this)" aria-label="Oraciones Breves Diarias">
+      <span style="font-size:1.05rem">🙏</span><span class="rlabel">Breves</span>
+    </button>
+    <div class="rail-sep"></div>
+    <button class="rail-btn" title="Historial" onclick="toggleMobilePanel('right')" aria-label="Ver historial">
+      <span style="font-size:1.05rem">◷</span><span class="rlabel">Historial</span>
+    </button>
+    <button class="rail-btn" title="Configuración" onclick="toggleContemplative()" aria-label="Modo contemplativo">
+      <span style="font-size:1.05rem">⚙</span><span class="rlabel">Contemplar</span>
+    </button>
+  </aside>
 
-      <button class="nav-item" data-mode="chaplet">
-        <span>☀</span>
-        Coronilla
-      </button>
+  <!-- LEFT CARDS -->
+  <div class="left-cards">
+    <!-- MOBILE TOGGLE -->
+    <button class="mobile-toggle" onclick="toggleMobilePanel('left')" aria-label="Mostrar paneles">☰ Paneles</button>
 
-      <button class="nav-item" data-mode="novena">
-        <span>▣</span>
-        Novena
-      </button>
-
-      <button class="nav-item" data-mode="cross">
-        <span>✝</span>
-        Vía Crucis
-      </button>
-
-      <button class="nav-item">
-        <span>🙏</span>
-        Oraciones
-      </button>
-
-      <button class="nav-item">
-        <span>◷</span>
-        Historial
-      </button>
-
-      <button class="nav-item">
-        <span>⚙</span>
-        Configuración
-      </button>
-    </aside>
-
-    <section class="left-card audio-card">
-      <h3>♫ Música Ambiental</h3>
-      <p>Adoración Eucarística</p>
-
-      <div class="audio-wave">
+    <!-- AUDIO -->
+    <div class="scard">
+      <div class="scard-title">♫ Música Ambiental</div>
+      <div class="audio-label">Adoración Eucarística</div>
+      <div class="wave" id="wave">
         <span></span><span></span><span></span><span></span><span></span>
-        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
       </div>
-
       <div class="audio-controls">
-        <button>⏮</button>
-        <button id="audio-btn" class="main-audio" aria-label="Reproducir o pausar música">⏸</button>
-        <button>⏭</button>
+        <button class="btn-s btn-icon" onclick="toggleSilentMode()" id="silent-btn" aria-label="Modo silencio">🔇</button>
+        <button class="btn-s btn-icon main" id="audio-btn" onclick="toggleAudio()" aria-label="Reproducir o pausar música">⏸</button>
+        <button class="btn-s btn-icon" onclick="toggleVoice()" id="voice-btn" aria-label="Activar voz">🔊</button>
       </div>
-
-      <div class="volume-row">
+      <div class="vol-row">
         <span>🔊</span>
-        <div class="volume-track"><div></div></div>
+        <div class="vol-track"><div class="vol-fill"></div></div>
+        <span style="font-size:.68rem;color:var(--text-shadow)">65%</span>
       </div>
-    </section>
-
-    <section class="left-card flower-card">
-      <h3>🌹 Ofrecer Flores</h3>
-      <p>María, Madre de la Misericordia, te ofrezco estas flores con amor, por Jesús y por las almas del mundo entero. Amén.</p>
-      <button id="flowers-btn" aria-label="Ofrecer flores a María">Ofrecer Flores</button>
-    </section>
-
-    <aside class="right-panel">
-      <section class="panel-section current">
-        <h2>Oración actual</h2>
-        <h1 id="prayer-title">Hora de la Misericordia</h1>
-        <div class="mercy-pill">♥ 15:00</div>
-        <p id="mercy-countdown">Faltan 00:00:00 para las 15:00</p>
-      </section>
-
-      <section class="panel-section">
-        <h2>Elegir oración</h2>
-
-        <div class="prayer-list">
-          <button data-mode="mercy" class="active">
-            ✦ Hora de la Misericordia
-            <small>15:00</small>
-          </button>
-
-          <button data-mode="chaplet">
-            ✚ Coronilla
-          </button>
-
-          <button data-mode="novena">
-            ✧ Novena
-          </button>
-
-          <button data-mode="cross">
-            ✝ Vía Crucis
-          </button>
-
-          <button data-mode="rosary">
-            ✠ Santo Rosario
-          </button>
-        </div>
-      </section>
-
-      <section class="panel-section">
-        <h2>Velocidad</h2>
-
-        <div class="speed-grid">
-          <button data-speed="slow">
-            <span>◷</span>
-            Lenta
-          </button>
-
-          <button data-speed="normal" class="active">
-            <span>✠</span>
-            Normal
-          </button>
-
-          <button data-speed="fast">
-            <span>➤</span>
-            Rápida
-          </button>
-        </div>
-      </section>
-
-      <section class="panel-section">
-        <h2>Progreso</h2>
-
-        <div class="progress-row">
-          <div class="progress-track">
-            <div id="progress-fill"></div>
-          </div>
-          <strong id="progress-label">0%</strong>
-        </div>
-
-        <p id="count-label">Cuenta 0 de 59</p>
-      </section>
-
-      <section class="panel-section">
-        <div class="player-row">
-      <button id="prev-btn" aria-label="Paso anterior">⏪</button>
-      <button id="play-btn" class="play-main" aria-label="Reproducir oración">▶</button>
-      <button id="reset-btn" aria-label="Reiniciar">■</button>
-        </div>
-      </section>
-
-      <section class="panel-section">
-        <h2>Controles</h2>
-
-        <div class="control-grid">
-      <button id="repeat-btn" aria-label="Repetir oración">
-        <span>↻</span>
-        Repetir
-      </button>
-
-      <button id="next-btn" aria-label="Continuar con siguiente">
-        <span>🔖</span>
-        Continuar
-      </button>
-        </div>
-      </section>
-
-      <section class="panel-section prayer-box">
-        <p id="prayer-text">Preparando oración...</p>
-      </section>
-    </aside>
-
-    <section class="trust-card">
-      <div>
-        <strong>Jesús, En Vos Confío</strong>
-        <span>Haz clic para escuchar</span>
-      </div>
-      <button aria-label="Escuchar Jesús, En Vos Confío">✝</button>
-    </section>
-
-    <section class="incense-card">
-      <button id="incense-btn" aria-label="Ofrecer incienso">Ofrecer Incienso</button>
-      <p>Señor Jesús, te ofrezco este incienso como símbolo de mi oración que se eleva hasta tu Trono de Misericordia. Amén.</p>
-    </section>
-
-    <nav class="bottom-steps">
-      <button class="active"><span>🎨</span><b>1</b> Oración actual</button>
-      <button><span>📿</span><b>2</b> Santo Rosario</button>
-      <button><span>☀</span><b>3</b> Coronilla</button>
-      <button><span>▣</span><b>4</b> Novena</button>
-      <button><span>✝</span><b>5</b> Vía Crucis</button>
-      <button><span>🙏</span><b>6</b> Oraciones</button>
-      <button><span>▥</span><b>7</b> Historial</button>
-    </nav>
-
-    <div class="footer-icons">
-      <button aria-label="Configuración">⚙</button>
-      <button aria-label="Vela">🕯</button>
-      <button id="fullscreen-btn" aria-label="Pantalla completa">⛶</button>
     </div>
 
-    <div id="toast"></div>
+    <!-- CANDLES -->
+    <div class="scard">
+      <div class="scard-title">🕯 Velas Votivas</div>
+      <div class="candles-row">
+        <div class="candle" onclick="offerCandle(this)" title="Ofrecer vela" aria-label="Ofrecer vela votiva">
+          <div class="candle-flame">
+            <div class="f-outer" style="--fd:1.4s"></div>
+            <div class="f-inner" style="--fd:1.4s"></div>
+          </div>
+          <div class="candle-body"></div><div class="candle-base"></div>
+        </div>
+        <div class="candle" onclick="offerCandle(this)" title="Ofrecer vela" aria-label="Ofrecer vela votiva">
+          <div class="candle-flame">
+            <div class="f-outer" style="--fd:1.85s"></div>
+            <div class="f-inner" style="--fd:1.85s"></div>
+          </div>
+          <div class="candle-body"></div><div class="candle-base"></div>
+        </div>
+        <div class="candle" onclick="offerCandle(this)" title="Ofrecer vela" aria-label="Ofrecer vela votiva">
+          <div class="candle-flame">
+            <div class="f-outer" style="--fd:1.2s"></div>
+            <div class="f-inner" style="--fd:1.2s"></div>
+          </div>
+          <div class="candle-body"></div><div class="candle-base"></div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:.72rem;color:var(--text-shadow);font-style:italic">Toca para ofrecer una vela votiva</p>
+    </div>
+
+    <!-- FLOWERS -->
+    <div class="scard">
+      <div class="scard-title">🌹 Ofrecer Flores</div>
+      <p class="offer-text">María, Madre de la Misericordia, te ofrezco estas flores con amor, por Jesús y por las almas del mundo entero. Amén.</p>
+      <button class="btn-s btn-full" id="flowers-btn" onclick="offerFlowers()" aria-label="Ofrecer flores a María">🌹 Ofrecer Flores</button>
+    </div>
+
+    <!-- INCENSE -->
+    <div class="scard">
+      <div class="scard-title">🌿 Incienso Sagrado</div>
+      <p class="offer-text">Señor Jesús, te ofrezco este incienso como símbolo de mi oración que sube hasta tu Trono de Misericordia. Amén.</p>
+      <button class="btn-s btn-full" id="incense-btn" onclick="offerIncense()" aria-label="Encender incienso">🌿 Encender Incienso</button>
+    </div>
+
+    <!-- INTENTIONS -->
+    <div class="scard">
+      <div class="scard-title">📝 Intenciones Personales</div>
+      <textarea class="intention-input" id="intention-input" placeholder="Escribe tu intención personal..." aria-label="Escribir intención personal"></textarea>
+      <button class="btn-s btn-full" onclick="saveIntention()" aria-label="Guardar intención">💖 Guardar Intención</button>
+      <ul class="intention-list" id="intention-list"></ul>
+    </div>
   </div>
 
-  <script type="module" src="src/main.js"></script>
+  <!-- CENTER SANCTUARY -->
+  <main class="center-sanctuary">
+    <div class="gothic-arch"></div>
+
+    <!-- Retablo / Altarpiece -->
+    <div class="retablo">
+      <div class="retablo-rays"></div>
+      <div class="retablo-frame">
+        <span class="corner tl">✦</span>
+        <span class="corner tr">✦</span>
+        <span class="corner bl">✦</span>
+        <span class="corner br">✦</span>
+        <div class="retablo-cross">✝</div>
+        <div class="retablo-quote">«Jesús, confío<br>en Vos»</div>
+      </div>
+      <div class="retablo-sub">Santuario de la Divina Misericordia</div>
+    </div>
+
+    <!-- Mercy countdown hub -->
+    <div class="mercy-hub">
+      <div class="mercy-badge"><span>♥</span> Hora de la Misericordia · 15:00</div>
+      <div class="mercy-clock" id="mercy-countdown">00:00:00</div>
+      <div class="mercy-hint" id="mercy-hint">Faltan para la Hora de la Misericordia</div>
+
+      <div class="sacred-divider"><span class="div-ornament">✦</span></div>
+
+      <div class="prayer-display">
+        <div class="pd-title" id="center-prayer-title">Hora de la Misericordia</div>
+        <div class="pd-text" id="center-prayer-text">
+          Padre Eterno, te ofrezco el Cuerpo y la Sangre, el Alma y la Divinidad de tu Amadísimo Hijo, Nuestro Señor Jesucristo, como propiciación de nuestros pecados y los del mundo entero.
+        </div>
+        <div class="pd-guide" id="center-prayer-guide"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- RIGHT PANEL -->
+  <aside class="right-panel">
+    <!-- Current prayer -->
+    <div class="scard">
+      <div class="phead">Oración actual</div>
+      <div class="ptitle" id="prayer-title">Hora de la Misericordia</div>
+      <div class="mercy-pill-sm"><div class="pdot"></div> ♥ 15:00</div>
+      <p style="font-size:.72rem;color:var(--text-shadow);font-style:italic" id="mercy-countdown-sm">Calculando...</p>
+    </div>
+
+    <!-- Prayer list -->
+    <div class="scard">
+      <div class="phead">Elegir Oración</div>
+
+      <div class="pli active" data-mode="mercy" onclick="selectPrayer('mercy',null)" aria-label="Seleccionar Hora de la Misericordia">
+        <div class="pli-icon">✦</div>
+        <div><span class="pli-name">Hora de la Misericordia</span><span class="pli-time">15:00 · Diaria</span></div>
+      </div>
+      <div class="pli" data-mode="chaplet" onclick="selectPrayer('chaplet',null)" aria-label="Seleccionar Coronilla">
+        <div class="pli-icon">✚</div>
+        <div><span class="pli-name">Coronilla</span><span class="pli-time">~20 min · 59 cuentas</span></div>
+      </div>
+      <div class="pli" data-mode="novena" onclick="selectPrayer('novena',null)" aria-label="Seleccionar Novena">
+        <div class="pli-icon">✧</div>
+        <div><span class="pli-name">Novena</span><span class="pli-time">9 días</span></div>
+      </div>
+      <div class="pli" data-mode="cross" onclick="selectPrayer('cross',null)" aria-label="Seleccionar Vía Crucis">
+        <div class="pli-icon">✝</div>
+        <div><span class="pli-name">Vía Crucis</span><span class="pli-time">14 estaciones</span></div>
+      </div>
+      <div class="pli" data-mode="rosary" onclick="selectPrayer('rosary',null)" aria-label="Seleccionar Santo Rosario">
+        <div class="pli-icon">✠</div>
+        <div><span class="pli-name">Santo Rosario</span><span class="pli-time">~15 min · 53 avemarías</span></div>
+      </div>
+      <div class="pli" data-mode="brief" onclick="selectPrayer('brief',null)" aria-label="Seleccionar Oraciones Breves">
+        <div class="pli-icon">🙏</div>
+        <div><span class="pli-name">Oraciones Breves</span><span class="pli-time">Diarias · Variadas</span></div>
+      </div>
+    </div>
+
+    <!-- Speed -->
+    <div class="scard">
+      <div class="phead">Velocidad de Oración</div>
+      <div class="speed-grid">
+        <button class="btn-s spd-btn" data-speed="slow" onclick="setSpeed(this)" aria-label="Velocidad lenta">◷ Lenta</button>
+        <button class="btn-s spd-btn active" data-speed="normal" onclick="setSpeed(this)" aria-label="Velocidad normal">✠ Normal</button>
+        <button class="btn-s spd-btn" data-speed="fast" onclick="setSpeed(this)" aria-label="Velocidad rápida">➤ Rápida</button>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="scard">
+      <div class="phead">Progreso</div>
+      <div class="prog-track"><div class="prog-fill" id="progress-fill"></div></div>
+      <div class="prog-meta">
+        <span class="prog-count" id="count-label">Paso 1 de X</span>
+        <span class="prog-pct" id="progress-label">0%</span>
+      </div>
+    </div>
+
+    <!-- Player -->
+    <div class="scard">
+      <div class="phead">Controles</div>
+      <div class="player-row">
+        <button class="btn-s btn-icon" onclick="prevPrayer()" aria-label="Paso anterior">⏪</button>
+        <button class="play-main" id="play-btn" onclick="togglePlay()" aria-label="Reproducir o pausar oración">▶</button>
+        <button class="btn-s btn-icon" onclick="resetPrayer()" aria-label="Reiniciar oración">■</button>
+      </div>
+      <div class="speed-grid">
+        <button class="btn-s spd-btn" id="repeat-btn" onclick="toggleRepeat()" aria-label="Repetir oración">↻ Repetir</button>
+        <button class="btn-s spd-btn" onclick="nextPrayer()" aria-label="Siguiente paso">🔖 Siguiente</button>
+      </div>
+    </div>
+
+    <!-- Prayer text -->
+    <div class="scard">
+      <div class="phead">Texto de Oración</div>
+      <div class="prayer-box">
+        <p id="prayer-text">Preparando la oración sagrada...</p>
+      </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="scard">
+      <div class="phead">Historial Reciente</div>
+      <ul class="history-list" id="history-list">
+        <li class="history-item" style="color:var(--text-shadow);font-style:italic">El historial aparecerá aquí...</li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button class="bot-btn active" data-mode="mercy" onclick="selectPrayer('mercy',null)" aria-label="Hora de la Misericordia">
+      <span>✦</span><span class="blabel">Oración</span>
+    </button>
+    <button class="bot-btn" data-mode="rosary" onclick="selectPrayer('rosary',null)" aria-label="Santo Rosario">
+      <span>📿</span><span class="blabel">Rosario</span>
+    </button>
+    <button class="bot-btn" data-mode="chaplet" onclick="selectPrayer('chaplet',null)" aria-label="Coronilla">
+      <span>☀</span><span class="blabel">Coronilla</span>
+    </button>
+    <button class="bot-btn" data-mode="novena" onclick="selectPrayer('novena',null)" aria-label="Novena">
+      <span>▣</span><span class="blabel">Novena</span>
+    </button>
+    <button class="bot-btn" data-mode="cross" onclick="selectPrayer('cross',null)" aria-label="Vía Crucis">
+      <span>✝</span><span class="blabel">Vía Crucis</span>
+    </button>
+    <button class="bot-btn" data-mode="brief" onclick="selectPrayer('brief',null)" aria-label="Oraciones Breves">
+      <span>🙏</span><span class="blabel">Breves</span>
+    </button>
+
+    <div class="footer-icons">
+      <button class="ficon" onclick="toggleVoice()" id="footer-voice" aria-label="Activar voz">🔊</button>
+      <button class="ficon" onclick="toggleContemplative()" id="footer-contemplate" aria-label="Modo contemplativo">🕊</button>
+      <button class="ficon" onclick="toggleFullscreen()" aria-label="Pantalla completa">⛶</button>
+    </div>
+  </nav>
+
+  <div id="toast"></div>
+</div><!-- #app -->
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   DIVINA MISERICORDIA — SISTEMA SAGRADO PREMIUM
+   JavaScript Vanilla · Santuario Virtual Completo
+═══════════════════════════════════════════════════════════════ */
+
+/* ─── SACRED PARTICLE SYSTEM ─── */
+const canvas = document.getElementById('sacred-canvas');
+const ctx    = canvas.getContext('2d');
+
+function resizeCanvas() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const COLORS = [
+  'rgba(212,175,55,', 'rgba(240,208,100,',
+  'rgba(255,220,120,', 'rgba(255,245,200,'
+];
+
+class SacredMote {
+  constructor() { this.init(true); }
+  init(rand) {
+    this.x     = Math.random() * canvas.width;
+    this.y     = rand ? Math.random() * canvas.height : canvas.height + 10;
+    this.r     = Math.random() * 1.8 + .3;
+    this.vy    = -(Math.random() * .45 + .15);
+    this.vx    = (Math.random() - .5) * .22;
+    this.alpha = Math.random() * .55 + .15;
+    this.maxA  = this.alpha;
+    this.life  = rand ? Math.floor(Math.random() * 500) : 0;
+    this.maxL  = Math.random() * 450 + 180;
+    this.phase = Math.random() * Math.PI * 2;
+    this.col   = COLORS[Math.floor(Math.random() * COLORS.length)];
+  }
+  step() {
+    this.x  += this.vx + Math.sin(this.phase + this.life * .018) * .18;
+    this.y  += this.vy;
+    this.life++;
+    const f = this.life / this.maxL;
+    if (f < .1)      this.alpha = this.maxA * (f / .1);
+    else if (f > .7) this.alpha = this.maxA * (1 - (f - .7) / .3);
+    else             this.alpha = this.maxA;
+    if (this.life >= this.maxL || this.y < -8) this.init(false);
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = `${this.col}${this.alpha})`;
+    ctx.fill();
+    if (this.r > 1.2) {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r * 2.8, 0, Math.PI * 2);
+      ctx.fillStyle = `${this.col}${this.alpha * .12})`;
+      ctx.fill();
+    }
+  }
+}
+
+const motes = Array.from({length:90}, () => new SacredMote());
+
+(function animateMotes() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  motes.forEach(m => { m.step(); m.draw(); });
+  requestAnimationFrame(animateMotes);
+})();
+
+/* ─── LOADING ─── */
+setTimeout(() => document.getElementById('loading').classList.add('hidden'), 2900);
+
+/* ─── MERCY COUNTDOWN ─── */
+function updateMercy() {
+  const now = new Date();
+  const t   = new Date();
+  t.setHours(15, 0, 0, 0);
+  if (now >= t) t.setDate(t.getDate() + 1);
+  const diff = t - now;
+  const hh = String(Math.floor(diff / 3600000)).padStart(2,'0');
+  const mm = String(Math.floor((diff % 3600000) / 60000)).padStart(2,'0');
+  const ss = String(Math.floor((diff % 60000) / 1000)).padStart(2,'0');
+  const str = `${hh}:${mm}:${ss}`;
+  document.getElementById('mercy-countdown').textContent   = str;
+  document.getElementById('mercy-countdown-sm').textContent = `Faltan ${str} para las 15:00`;
+}
+updateMercy();
+setInterval(updateMercy, 1000);
+
+/* ─── PRAYERS DATA (Restructured) ─── */
+const PRAYERS = {
+  mercy: {
+    id: 'mercy',
+    title: 'Hora de la Misericordia',
+    description: 'Oración de las tres de la tarde',
+    duration: '5 minutos',
+    level: 'todos',
+    steps: [
+      { label: 'Ofrenda', guide: 'Ofrece al Padre el Cuerpo y la Sangre de Jesús', text: 'Padre Eterno, te ofrezco el Cuerpo y la Sangre, el Alma y la Divinidad de tu Amadísimo Hijo, Nuestro Señor Jesucristo, como propiciación de nuestros pecados y los del mundo entero.' },
+      { label: 'Súplica', guide: 'Pide misericordia por todos', text: 'Por su dolorosa Pasión, ten misericordia de nosotros y del mundo entero. Amén.' },
+      { label: 'Confianza', guide: 'Clama a Jesús con confianza', text: 'En esta hora de la Misericordia, clamo a Ti, Señor Jesús. Por la bondad de Tu Corazón, concédenos tu gracia y bendición.' }
+    ]
+  },
+  chaplet: {
+    id: 'chaplet',
+    title: 'Coronilla de la Divina Misericordia',
+    description: 'Reza la Coronilla según las visiones de Santa Faustina',
+    duration: '20 minutos',
+    level: 'intermedio',
+    steps: [
+      { label: 'Padre Nuestro', guide: 'Comienza con el Padre Nuestro', text: 'Padre Nuestro que estás en el cielo, santificado sea tu Nombre, venga tu reino, hágase tu voluntad en la tierra como en el cielo.' },
+      { label: 'Ave María 1', guide: 'Primera Ave María', text: 'Dios te salve, María, llena eres de gracia, el Señor es contigo; bendita tú eres entre todas las mujeres, y bendito es el fruto de tu vientre, Jesús.' },
+      { label: 'Ave María 2', guide: 'Segunda Ave María', text: 'Santa María, Madre de Dios, ruega por nosotros pecadores, ahora y en la hora de nuestra muerte. Amén.' },
+      { label: 'Ofrenda', guide: 'Ofrece por los pecadores', text: 'Por su dolorosa Pasión, ten misericordia de nosotros y del mundo entero.' },
+      { label: 'Santo Dios', guide: 'Clama a la Santísima Trinidad', text: 'Santo Dios, Santo Fuerte, Santo Inmortal, ten misericordia de nosotros y del mundo entero.' }
+    ]
+  },
+  rosary: {
+    id: 'rosary',
+    title: 'Santo Rosario',
+    description: 'Medita los misterios de la vida de Jesús y María',
+    duration: '15 minutos',
+    level: 'intermedio',
+    steps: [
+      { label: 'Credo', guide: 'Comienza profesando tu fe', text: 'Creo en Dios, Padre Todopoderoso, Creador del cielo y de la tierra...' },
+      { label: 'Padre Nuestro', guide: 'Reza el Padre Nuestro', text: 'Padre Nuestro que estás en el cielo, santificado sea tu Nombre, venga tu reino, hágase tu voluntad en la tierra como en el cielo.' },
+      { label: 'Ave María 1-3', guide: 'Tres Ave Marías por las virtudes', text: 'Dios te salve, María, llena eres de gracia; el Señor es contigo; bendita tú eres entre todas las mujeres...' },
+      { label: 'Gloria', guide: 'Gloria a la Santísima Trinidad', text: 'Gloria al Padre, y al Hijo, y al Espíritu Santo. Como era en el principio, ahora y siempre, y por los siglos de los siglos. Amén.' }
+    ]
+  },
+  novena: {
+    id: 'novena',
+    title: 'Novena a la Divina Misericordia',
+    description: 'Nueve días de oración y confianza',
+    duration: '9 días',
+    level: 'intermedio',
+    steps: [
+      { label: 'Día 1', guide: 'Ofrece a la humanidad entera', text: 'Hoy me traes a la humanidad entera, especialmente a todos los pecadores, y la sumerjo en el océano de Tu misericordia.' },
+      { label: 'Día 2', guide: 'Pide mirada misericordiosa', text: 'Padre Celestial, dirige Tu mirada misericordiosa sobre la humanidad entera, especialmente sobre los pobres pecadores. Por la dolorosa Pasión de Tu Hijo, ten misericordia de nosotros.' },
+      { label: 'Día 3', guide: 'Confía en la sangre y agua', text: 'Oh sangre y agua que brotaste del Corazón de Jesús como manantial de misericordia para nosotros, en Ti confío.' }
+    ]
+  },
+  cross: {
+    id: 'cross',
+    title: 'Vía Crucis',
+    description: 'Acompaña a Jesús en su camino al Calvario',
+    duration: '30 minutos',
+    level: 'experto',
+    steps: [
+      { label: 'Estación 1', guide: 'Jesús es condenado a muerte', text: 'Te adoramos, oh Cristo, y te bendecimos, porque por tu Santa Cruz redimiste al mundo.' },
+      { label: 'Estación 2', guide: 'Jesús toma su Cruz', text: 'Señor, ayúdanos a cargar nuestra propia cruz con amor y paciencia, como Tú cargaste la tuya por nosotros.' },
+      { label: 'Estación 3', guide: 'Jesús cae por primera vez', text: 'Señor, cuando caemos en el pecado, levántanos con tu misericordia infinita.' }
+    ]
+  },
+  brief: {
+    id: 'brief',
+    title: 'Oraciones Breves Diarias',
+    description: 'Oraciones cortas para el día',
+    duration: '2 minutos',
+    level: 'novato',
+    steps: [
+      { label: 'Jesús, en Vos confío', guide: 'Clama con confianza', text: 'Jesús, en Vos confío. Pon tu vida en manos de Jesús Misericordioso.' },
+      { label: 'Corazón de Jesús', guide: 'Pide misericordia', text: 'Corazón de Jesús, abismo de misericordia, ten misericordia de nosotros.' },
+      { label: 'María, Refugio', guide: 'Acude a la Virgen', text: 'María, Madre de la Misericordia, refugio de los pecadores, ruega por nosotros.' }
+    ]
+  }
+};
+
+/* ─── STATE ─── */
+const state = {
+  mode:'mercy', step:0, playing:false, repeating:false,
+  speed:'normal', interval:null, level:'intermedio',
+  voiceEnabled:false, silentMode:false, contemplative:false
+};
+
+/* ─── LEVEL SYSTEM ─── */
+function setLevel(level) {
+  state.level = level;
+  localStorage.setItem('santuario_level', level);
+  document.querySelectorAll('.level-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.level === level);
+  });
+  showToast(`Nivel: ${level.charAt(0).toUpperCase() + level.slice(1)}`);
+  updateUI();
+}
+
+function loadLevel() {
+  const saved = localStorage.getItem('santuario_level');
+  if (saved) setLevel(saved);
+}
+
+/* ─── VOICE SYSTEM (Web Speech API) ─── */
+function toggleVoice() {
+  if (!('speechSynthesis' in window)) {
+    showToast('La guía por voz no está disponible en este navegador');
+    return;
+  }
+  state.voiceEnabled = !state.voiceEnabled;
+  const btn = document.getElementById('voice-btn');
+  const fbtn = document.getElementById('footer-voice');
+  btn.textContent = state.voiceEnabled ? '🔊' : '🔇';
+  fbtn.textContent = state.voiceEnabled ? '🔊' : '🔇';
+  fbtn.classList.toggle('active', state.voiceEnabled);
+
+  if (!state.voiceEnabled) {
+    window.speechSynthesis.cancel();
+    showToast('Guía por voz desactivada');
+  } else {
+    showToast('Guía por voz activada');
+    if (state.playing) speakCurrentStep();
+  }
+}
+
+function speakCurrentStep() {
+  if (!state.voiceEnabled || !('speechSynthesis' in window)) return;
+  const prayer = getPrayer();
+  const step = prayer.steps[state.step % prayer.steps.length];
+  if (!step) return;
+
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(step.text);
+  utterance.lang = 'es-ES';
+  utterance.rate = 0.8;
+  utterance.pitch = 1;
+  window.speechSynthesis.speak(utterance);
+}
+
+/* ─── SILENT MODE ─── */
+function toggleSilentMode() {
+  state.silentMode = !state.silentMode;
+  const btn = document.getElementById('silent-btn');
+  btn.textContent = state.silentMode ? '🔇' : '🔊';
+  btn.classList.toggle('active', state.silentMode);
+  showToast(state.silentMode ? 'Modo silencio activado' : 'Modo silencio desactivado');
+}
+
+/* ─── CONTEMPLATIVE MODE ─── */
+function toggleContemplative() {
+  state.contemplative = !state.contemplative;
+  document.getElementById('app').classList.toggle('contemplative', state.contemplative);
+  const btn = document.getElementById('footer-contemplate');
+  btn.classList.toggle('active', state.contemplative);
+  showToast(state.contemplative ? 'Modo contemplativo activado' : 'Modo contemplativo desactivado');
+}
+
+/* ─── INTENTIONS (localStorage) ─── */
+function loadIntentions() {
+  const intentions = JSON.parse(localStorage.getItem('santuario_intentions') || '[]');
+  const list = document.getElementById('intention-list');
+  list.innerHTML = '';
+  intentions.forEach((intention, index) => {
+    const li = document.createElement('li');
+    li.className = 'intention-item';
+    li.innerHTML = `
+      ${intention}
+      <button class="intention-remove" onclick="removeIntention(${index})" aria-label="Eliminar intención">×</button>
+    `;
+    list.appendChild(li);
+  });
+}
+
+function saveIntention() {
+  const input = document.getElementById('intention-input');
+  const text = input.value.trim();
+  if (!text) { showToast('Escribe una intención válida'); return; }
+
+  const intentions = JSON.parse(localStorage.getItem('santuario_intentions') || '[]');
+  intentions.push(text);
+  localStorage.setItem('santuario_intentions', JSON.stringify(intentions));
+  input.value = '';
+  loadIntentions();
+  showToast('💖 Intención guardada con amor');
+}
+
+function removeIntention(index) {
+  const intentions = JSON.parse(localStorage.getItem('santuario_intentions') || '[]');
+  intentions.splice(index, 1);
+  localStorage.setItem('santuario_intentions', JSON.stringify(intentions));
+  loadIntentions();
+  showToast('Intención eliminada');
+}
+
+/* ─── HISTORY (localStorage) ─── */
+function loadHistory() {
+  const history = JSON.parse(localStorage.getItem('santuario_history') || '[]');
+  const list = document.getElementById('history-list');
+  list.innerHTML = '';
+
+  if (history.length === 0) {
+    list.innerHTML = '<li class="history-item" style="color:var(--text-shadow);font-style:italic">El historial aparecerá aquí...</li>';
+    return;
+  }
+
+  history.slice(-5).reverse().forEach(entry => {
+    const li = document.createElement('li');
+    li.className = 'history-item';
+    li.innerHTML = `
+      <span class="history-date">${entry.date} · ${entry.time}</span>
+      ${entry.prayer}
+    `;
+    list.appendChild(li);
+  });
+}
+
+function addToHistory(prayerName) {
+  const history = JSON.parse(localStorage.getItem('santuario_history') || '[]');
+  const now = new Date();
+  const entry = {
+    date: now.toLocaleDateString('es-ES'),
+    time: now.toLocaleTimeString('es-ES', {hour:'2-digit', minute:'2-digit'}),
+    prayer: prayerName
+  };
+  history.push(entry);
+  if (history.length > 50) history.shift();
+  localStorage.setItem('santuario_history', JSON.stringify(history));
+  loadHistory();
+}
+
+/* ─── MOBILE PANELS ─── */
+function toggleMobilePanel(panel) {
+  const left = document.querySelector('.left-cards');
+  const right = document.querySelector('.right-panel');
+  if (panel === 'left') left.classList.toggle('show-mobile');
+  if (panel === 'right') right.classList.toggle('show-mobile');
+}
+
+/* ─── KEYBOARD SUPPORT ─── */
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+  switch(e.key) {
+    case ' ': e.preventDefault(); togglePlay(); break;
+    case 'ArrowLeft': prevPrayer(); break;
+    case 'ArrowRight': nextPrayer(); break;
+    case 'r': case 'R': toggleRepeat(); break;
+    case 'v': case 'V': toggleVoice(); break;
+    case 'c': case 'C': toggleContemplative(); break;
+  }
+});
+
+/* ─── GET PRAYER ─── */
+function getPrayer() { return PRAYERS[state.mode]; }
+
+/* ─── UPDATE UI ─── */
+function updateUI() {
+  const p   = getPrayer();
+  const step = p.steps[state.step % p.steps.length];
+  const currentStep = state.step + 1;
+  const totalSteps = p.steps.length;
+  const pct = Math.round((currentStep / totalSteps) * 100);
+
+  document.getElementById('prayer-title').textContent       = p.title;
+  document.getElementById('center-prayer-title').textContent = p.title;
+  document.getElementById('center-prayer-text').textContent  = step.text;
+  document.getElementById('center-prayer-guide').textContent = (state.level !== 'experto') ? step.guide : '';
+  document.getElementById('prayer-text').textContent         = step.text;
+
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = pct + '%';
+  document.getElementById('count-label').textContent    = `Paso ${currentStep} de ${totalSteps}`;
+  document.getElementById('play-btn').textContent       = state.playing ? '⏸' : '▶';
+
+  // Hide guide for experto level
+  const guideEl = document.getElementById('center-prayer-guide');
+  if (state.level === 'experto') guideEl.style.display = 'none';
+  else guideEl.style.display = 'block';
+}
+
+/* ─── SELECT PRAYER ─── */
+function selectPrayer(mode, railEl) {
+  state.mode = mode; state.step = 0;
+  clearInterval(state.interval);
+  state.playing = false;
+  updateUI();
+
+  /* sync all [data-mode] elements */
+  document.querySelectorAll('[data-mode]').forEach(el => {
+    el.classList.toggle('active', el.dataset.mode === mode);
+  });
+  showToast(`✦ ${PRAYERS[mode].title}`);
+}
+
+/* ─── TOGGLE PLAY ─── */
+function togglePlay() {
+  state.playing = !state.playing;
+  if (state.playing) {
+    const delay = state.speed === 'slow' ? 9000 : state.speed === 'fast' ? 2000 : 5000;
+    clearInterval(state.interval);
+    state.interval = setInterval(nextPrayer, delay);
+    if (state.voiceEnabled) speakCurrentStep();
+  } else {
+    clearInterval(state.interval);
+    window.speechSynthesis.cancel();
+  }
+  updateUI();
+}
+
+/* ─── NEXT PRAYER ─── */
+function nextPrayer() {
+  const p = getPrayer();
+  if (state.step < p.steps.length - 1) {
+    state.step++;
+  } else if (state.repeating) {
+    state.step = 0;
+  } else {
+    state.step = p.steps.length - 1;
+    clearInterval(state.interval);
+    state.playing = false;
+    addToHistory(p.title);
+    showToast('✝ Oración completada — Amén');
+  }
+  updateUI();
+  if (state.playing && state.voiceEnabled) speakCurrentStep();
+}
+
+/* ─── PREVIOUS PRAYER ─── */
+function prevPrayer() {
+  if (state.step > 0) state.step--;
+  updateUI();
+  if (state.playing && state.voiceEnabled) speakCurrentStep();
+}
+
+/* ─── RESET PRAYER ─── */
+function resetPrayer() {
+  state.step = 0;
+  clearInterval(state.interval);
+  state.playing = false;
+  window.speechSynthesis.cancel();
+  updateUI();
+}
+
+/* ─── TOGGLE REPEAT ─── */
+function toggleRepeat() {
+  state.repeating = !state.repeating;
+  const btn = document.getElementById('repeat-btn');
+  btn.style.borderColor = state.repeating ? 'var(--gold-bright)' : '';
+  btn.style.color       = state.repeating ? 'var(--gold-light)'  : '';
+  showToast(state.repeating ? '↻ Repetición activada' : '↻ Repetición desactivada');
+}
+
+/* ─── SET SPEED ─── */
+function setSpeed(el) {
+  document.querySelectorAll('.spd-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  state.speed = el.dataset.speed;
+  if (state.playing) {
+    clearInterval(state.interval);
+    const delay = state.speed === 'slow' ? 9000 : state.speed === 'fast' ? 2000 : 5000;
+    state.interval = setInterval(nextPrayer, delay);
+  }
+}
+
+/* ─── OFFERINGS ─── */
+function offerCandle(el) {
+  el.style.filter    = 'brightness(1.6) drop-shadow(0 0 12px rgba(255,159,28,.9))';
+  el.style.transform = 'scale(1.15)';
+  setTimeout(() => { el.style.filter = ''; el.style.transform = ''; }, 600);
+  showToast('🕯 Vela ofrecida a Jesús con amor');
+}
+
+function offerFlowers() {
+  const btn = document.getElementById('flowers-btn');
+  btn.textContent = '🌹 ¡Ofrecidas con amor — Amén!';
+  setTimeout(() => { btn.textContent = '🌹 Ofrecer Flores'; }, 2500);
+  showToast('🌹 Flores ofrecidas a la Virgen María');
+}
+
+function offerIncense() {
+  const btn = document.getElementById('incense-btn');
+  btn.textContent = '🌿 ¡Incienso elevado al cielo!';
+  setTimeout(() => { btn.textContent = '🌿 Encender Incienso'; }, 2500);
+  showToast('🌿 Incienso elevado al Trono de Misericordia');
+}
+
+/* ─── AUDIO TOGGLE ─── */
+let audioOn = true;
+function toggleAudio() {
+  audioOn = !audioOn;
+  document.getElementById('audio-btn').textContent = audioOn ? '⏸' : '▶';
+  document.querySelectorAll('.wave span').forEach(s => {
+    s.style.animationPlayState = audioOn ? 'running' : 'paused';
+  });
+  showToast(audioOn ? '♫ Música reanudada' : '♫ Música en pausa');
+}
+
+/* ─── TOAST ─── */
+let toastTid;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTid);
+  toastTid = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ─── FULLSCREEN ─── */
+function toggleFullscreen() {
+  if (!document.fullscreenElement)
+    document.documentElement.requestFullscreen().catch(() => {});
+  else
+    document.exitFullscreen().catch(() => {});
+}
+
+/* ─── INIT ─── */
+loadLevel();
+loadIntentions();
+loadHistory();
+updateUI();
+</script>
 </body>
 </html>
