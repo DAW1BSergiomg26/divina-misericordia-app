@@ -7,6 +7,7 @@ export class SanctuaryScene {
     this.root = root;
     this.clock = new THREE.Clock();
     this.objects = {};
+    this.clickables = [];
   }
 
   init() {
@@ -248,28 +249,181 @@ export class SanctuaryScene {
   }
 
   buildFlowers() {
-    const red = new THREE.MeshStandardMaterial({
-      color: 0xb60018,
-      roughness: 0.48,
-      emissive: 0x250006,
+    const stemMat = new THREE.MeshStandardMaterial({
+      color: 0x1f5b2c,
+      roughness: 0.75,
+      metalness: 0.02
+    });
+
+    const leafMat = new THREE.MeshStandardMaterial({
+      color: 0x2d6b35,
+      roughness: 0.72,
+      side: THREE.DoubleSide
+    });
+
+    const vaseMat = new THREE.MeshStandardMaterial({
+      color: 0xd4a820,
+      roughness: 0.18,
+      metalness: 0.78,
+      emissive: 0x271700,
       emissiveIntensity: 0.08
     });
 
-    [-2.9, 2.9].forEach((x) => {
-      const bouquet = new THREE.Group();
+    const roseMats = [
+      new THREE.MeshStandardMaterial({
+        color: 0xb30016,
+        roughness: 0.48,
+        emissive: 0x300006,
+        emissiveIntensity: 0.08,
+        side: THREE.DoubleSide
+      }),
+      new THREE.MeshStandardMaterial({
+        color: 0xd41424,
+        roughness: 0.5,
+        emissive: 0x340006,
+        emissiveIntensity: 0.09,
+        side: THREE.DoubleSide
+      }),
+      new THREE.MeshStandardMaterial({
+        color: 0x8f0010,
+        roughness: 0.52,
+        emissive: 0x240004,
+        emissiveIntensity: 0.075,
+        side: THREE.DoubleSide
+      })
+    ];
 
-      for (let i = 0; i < 28; i++) {
-        const flower = new THREE.Mesh(new THREE.SphereGeometry(0.055, 12, 8), red);
-        const a = (i / 28) * Math.PI * 2;
-        const r = 0.18 + Math.random() * 0.22;
+    const petalGeo = new THREE.SphereGeometry(0.07, 14, 10);
+    const pos = petalGeo.attributes.position;
 
-        flower.position.set(Math.cos(a) * r, Math.random() * 0.42, Math.sin(a) * r);
-        bouquet.add(flower);
+    for (let i = 0; i < pos.count; i++) {
+      pos.setXYZ(
+        i,
+        pos.getX(i) * 1.2,
+        pos.getY(i) * 0.25,
+        pos.getZ(i) * 0.72 + Math.sign(pos.getZ(i)) * 0.015
+      );
+    }
+
+    petalGeo.computeVertexNormals();
+
+    const makeRose = (matIndex = 0) => {
+      const rose = new THREE.Group();
+
+      const stem = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.01, 0.014, 0.52, 8),
+        stemMat
+      );
+      stem.position.y = 0.26;
+      rose.add(stem);
+
+      for (let l = 0; l < 2; l++) {
+        const leaf = new THREE.Mesh(
+          new THREE.SphereGeometry(0.06, 8, 6),
+          leafMat
+        );
+
+        leaf.scale.set(1.2, 0.22, 0.55);
+        leaf.position.set(l ? 0.05 : -0.05, 0.22 + l * 0.08, 0.02);
+        leaf.rotation.set(0.2, l ? 0.9 : -0.9, l ? 0.45 : -0.45);
+
+        rose.add(leaf);
       }
 
-      bouquet.position.set(x, 1.25, 0.9);
+      for (let ring = 0; ring < 3; ring++) {
+        const count = ring === 0 ? 8 : ring === 1 ? 7 : 5;
+        const radius = 0.075 - ring * 0.018;
+
+        for (let p = 0; p < count; p++) {
+          const a = p / count * Math.PI * 2 + ring * 0.3;
+
+          const petal = new THREE.Mesh(petalGeo, roseMats[matIndex]);
+
+          petal.position.set(
+            Math.cos(a) * radius,
+            0.53 + ring * 0.012,
+            Math.sin(a) * radius
+          );
+
+          petal.rotation.set(0.45 + ring * 0.18, a, 0.45);
+          petal.scale.setScalar(1 - ring * 0.12);
+
+          petal.userData.type = 'flower';
+          this.clickables.push(petal);
+
+          rose.add(petal);
+        }
+      }
+
+      const bud = new THREE.Mesh(
+        new THREE.SphereGeometry(0.035, 12, 8),
+        roseMats[matIndex]
+      );
+
+      bud.position.y = 0.57;
+      bud.userData.type = 'flower';
+      this.clickables.push(bud);
+
+      rose.add(bud);
+
+      rose.userData.sway = Math.random() * Math.PI * 2;
+
+      return rose;
+    };
+
+    const createBouquet = (x, z, scale = 1) => {
+      const bouquet = new THREE.Group();
+
+      const vase = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.18, 0.28, 0.48, 28),
+        vaseMat
+      );
+
+      vase.position.y = 0.24;
+      vase.castShadow = true;
+      bouquet.add(vase);
+
+      const rim = new THREE.Mesh(
+        new THREE.TorusGeometry(0.18, 0.025, 8, 32),
+        vaseMat
+      );
+
+      rim.position.y = 0.49;
+      rim.rotation.x = Math.PI / 2;
+      bouquet.add(rim);
+
+      for (let i = 0; i < 34; i++) {
+        const a = i / 34 * Math.PI * 2;
+        const r = 0.06 + (i % 9) * 0.027;
+
+        const rose = makeRose(i % roseMats.length);
+
+        rose.position.set(
+          Math.cos(a) * r,
+          0.36 + (i % 6) * 0.022,
+          Math.sin(a) * r * 0.78
+        );
+
+        rose.rotation.y = a + Math.random() * 0.5;
+        rose.scale.setScalar(1.02 + Math.random() * 0.34);
+
+        bouquet.add(rose);
+      }
+
+      bouquet.position.set(x, 1.15, z);
+      bouquet.scale.setScalar(scale * 1.12);
+
       this.scene.add(bouquet);
-    });
+
+      return bouquet;
+    };
+
+    this.flowerGroup = new THREE.Group();
+
+    this.flowerGroup.add(createBouquet(-2.55, 0.82, 1.08));
+    this.flowerGroup.add(createBouquet(2.55, 0.82, 1.08));
+
+    this.scene.add(this.flowerGroup);
   }
 
   buildIncense(glow) {
@@ -365,6 +519,17 @@ export class SanctuaryScene {
       }
 
       this.particles.geometry.attributes.position.needsUpdate = true;
+    }
+
+    if (this.flowerGroup) {
+      this.flowerGroup.children.forEach(bouquet => {
+        bouquet.children.forEach(child => {
+          if (child.userData.sway !== undefined) {
+            child.rotation.z = Math.sin(t * 0.8 + child.userData.sway) * 0.06;
+            child.rotation.x = Math.cos(t * 0.6 + child.userData.sway) * 0.04;
+          }
+        });
+      });
     }
 
     this.renderer.render(this.scene, this.camera);
